@@ -9,3 +9,7 @@ def get_prices():
         'test': True,
         'message': 'This is only a test.'
     })
+
+# list users
+# list artwork
+# show leaderboard

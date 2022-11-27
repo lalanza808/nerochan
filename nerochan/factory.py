@@ -2,6 +2,7 @@ from flask import Flask
 from flask_login import LoginManager
 
 from nerochan.cli import cli
+from nerochan.routes import artwork
 
 
 def setup_db(app: Flask):
@@ -27,12 +28,13 @@ def create_app():
         return User.get_or_none(user_id)
 
     with app.app_context():
-        from nerochan.routes import api, auth, post, main
+        from nerochan.routes import api, auth, main, artwork, user
         from nerochan import filters
         app.register_blueprint(main.bp)
         app.register_blueprint(api.bp)
         app.register_blueprint(auth.bp)
-        app.register_blueprint(post.bp)
+        app.register_blueprint(artwork.bp)
+        app.register_blueprint(user.bp)
         app.register_blueprint(filters.bp)
 
     return app
