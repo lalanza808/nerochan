@@ -37,7 +37,8 @@ def cli(app):
             if not _user:
                 u = User(
                     handle=user,
-                    wallet_address=data[user]['wallet']
+                    wallet_address=data[user]['wallet'],
+                    is_approved=True
                 )
                 u.save()
                 _user = u
@@ -63,5 +64,4 @@ def cli(app):
                     )
                     artwork.save()
                     click.echo(f'[+] Created artwork {artwork.id} for {bn}')
-    
     return app

@@ -1,4 +1,4 @@
-DB_PATH=./data/sqlite.db
+DATA_PATH=/home/myuser/path/to/data
 
 XMR_WALLET_RPC_USER=xxxxxxxxxx
 XMR_WALLET_RPC_PASS=xxxxxxxxxxxxxxxxxxx

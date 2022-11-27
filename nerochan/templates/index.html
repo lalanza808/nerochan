@@ -2,8 +2,26 @@
 
 {% block content %}
 
+<div class="container">
+    <div class="row">
+		<h2>Latest Artworks</h2>
+		{% for artwork in feed['artwork'] %}
+			<p>{{ artwork.title }}</p>
+			<img src="{{ artwork.get_image_url() }}" width="80px">
+		{% endfor %}
+	</div>
+	<div class="row">
+		<h2>Latest Artists</h2>
+		{% for user in feed['users'] %}
+			<p>{{ user.handle }}</p>
+		{% endfor %}
+	</div>
+    </div>
+  </div>
+
 {% if current_user.is_authenticated %}
 	<p>logged in: {{ current_user.handle }}</p>
 {% endif %}
+
 
 {% endblock %}

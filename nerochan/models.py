@@ -1,13 +1,15 @@
 from datetime import datetime
 from secrets import token_urlsafe
 
+from flask import url_for
+
 import peewee as pw
 
 from nerochan import config
 
 
 db = pw.SqliteDatabase(
-    config.DB_PATH
+    config.DATA_PATH + '/sqlite.db'
 )
 
 def gen_challenge():
@@ -26,6 +28,8 @@ class User(pw.Model):
     challenge = pw.CharField(default=gen_challenge)
     is_admin = pw.BooleanField(default=False)
     is_mod = pw.BooleanField(default=False)
+    is_approved = pw.BooleanField(default=False)
+    is_banned = pw.BooleanField(default=False)
 
     @property
     def is_authenticated(self):
@@ -83,6 +87,9 @@ class Artwork(pw.Model):
     hidden = pw.BooleanField(default=False)
     title = pw.CharField()
     description = pw.TextField(null=True)
+
+    def get_image_url(self):
+        return url_for('main.uploaded_file', filename=self.path)
 
     class Meta:
         database = db

@@ -19,6 +19,7 @@ def main(handle: str):
 
 # approve artwork
 # ban user
+# allow user
 # hide artwork
 # promote mod
 # demote mod
