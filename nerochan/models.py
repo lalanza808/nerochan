@@ -1,7 +1,8 @@
+from os import path
 from datetime import datetime
 from secrets import token_urlsafe
 
-from flask import url_for
+from PIL import Image
 
 import peewee as pw
 
@@ -80,16 +81,31 @@ class Artwork(pw.Model):
     """
     id = pw.AutoField()
     creator = pw.ForeignKeyField(User)
-    path = pw.CharField()
+    image = pw.CharField()
+    thumbnail = pw.CharField(null=True)
     upload_date = pw.DateTimeField(default=datetime.utcnow)
     last_edit_date = pw.DateTimeField(default=datetime.utcnow)
     approved = pw.BooleanField(default=False)
     hidden = pw.BooleanField(default=False)
     title = pw.CharField()
     description = pw.TextField(null=True)
-
-    def get_image_url(self):
-        return url_for('main.uploaded_file', filename=self.path)
+    
+    def generate_thumbnail(self):
+        _t = f'thumbnail-{self.image}'
+        i = f'{config.DATA_PATH}/uploads/{self.image}'
+        t = f'{config.DATA_PATH}/uploads/{_t}'
+        if path.exists(t):
+            return True
+        try:
+            image = Image.open(i)
+            image.thumbnail((150,150), Image.ANTIALIAS)
+            image.save(t, format=image.format, quality=75)
+            image.close()
+            self.thumbnail = _t
+            self.save()
+            return True
+        except:
+            return False
 
     class Meta:
         database = db

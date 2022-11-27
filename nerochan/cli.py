@@ -54,14 +54,15 @@ def cli(app):
                         with open(fp, 'wb') as download:
                             download.write(content)
                     click.echo(f'[+] Downloaded {art}')
-                if not Artwork.select().where(Artwork.path == bn).first():
+                if not Artwork.select().where(Artwork.image == bn).first():
                     artwork = Artwork(
                         creator=_user,
-                        path=bn,
+                        image=bn,
                         approved=True,
                         title=f'i made {bn}',
                         description=''
                     )
                     artwork.save()
+                    artwork.generate_thumbnail()
                     click.echo(f'[+] Created artwork {artwork.id} for {bn}')
     return app

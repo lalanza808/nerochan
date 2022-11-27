@@ -7,7 +7,7 @@
 		<h2>Latest Artworks</h2>
 		{% for artwork in feed['artwork'] %}
 			<p>{{ artwork.title }}</p>
-			<img src="{{ artwork.get_image_url() }}" width="80px">
+			<img src="{{ url_for('main.uploaded_file', filename=artwork.thumbnail) }}" width="120px">
 		{% endfor %}
 	</div>
 	<div class="row">
