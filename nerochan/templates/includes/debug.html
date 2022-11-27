@@ -1,0 +1,9 @@
+{% if config.DEBUG and current_user.is_authenticated %}
+  <hr>
+  <h2>Debug</h2>
+  <p>
+    Username: {{ current_user.handle }} <br>
+    {% if current_user.email %}Email: {{ current_user.email }} <br>{% endif %}
+    Wallet Address: {{ current_user.wallet_address }} <br>
+  </p>
+{% endif %}

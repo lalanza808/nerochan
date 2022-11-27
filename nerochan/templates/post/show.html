@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+
+	{% include 'includes/head.html' %}
+
+	<body class="is-preload landing">
+		<div id="page-wrapper">
+
+				{% include 'includes/header.html' %}
+
+				{% if post %}
+          <h1>{{ post.title }}</h1>
+          <p>Posted: {{ post.post_date }}</p>
+          <p>Edited: {{ post.last_edit_date }}</p>
+          <p>{{ post.content }}</p>
+				{% endif %}
+
+				{% include 'includes/footer.html' %}
+
+		</div>
+
+		{% include 'includes/scripts.html' %}
+
+	</body>
+</html>

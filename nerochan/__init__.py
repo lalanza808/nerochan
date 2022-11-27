@@ -1,0 +1,1 @@
+from nerochan.factory import create_app

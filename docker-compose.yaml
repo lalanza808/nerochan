@@ -1,0 +1,16 @@
+version: '3'
+services:
+  cache:
+    image: redis:latest
+    ports:
+      - 127.0.0.1:6379:6379
+  wallet:
+    build:
+      context: .
+      dockerfile: Dockerfile-monero
+    ports:
+      - 127.0.0.1:${XMR_WALLET_RPC_PORT:-8000}:${XMR_WALLET_RPC_PORT:-8000}
+    volumes:
+      - ${DATA_DIR:-./data/wallet}:/data
+    command:
+      bash /run_wallet.sh "${XMR_WALLET_NETWORK}" "${XMR_WALLET_RPC_USER}:${XMR_WALLET_RPC_PASS}" "${XMR_DAEMON_URI}"

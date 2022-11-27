@@ -1,0 +1,17 @@
+Flask-WTF
+flask-login
+flask-bcrypt
+hypercorn
+Pillow
+psycopg2-binary
+python-dotenv
+qrcode
+redis
+peewee
+requests
+WTForms
+flask-session
+flask
+monero
+arrow
+flake8

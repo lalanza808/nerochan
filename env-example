@@ -1,0 +1,12 @@
+DB_PATH=./data/sqlite.db
+
+XMR_WALLET_RPC_USER=xxxxxxxxxx
+XMR_WALLET_RPC_PASS=xxxxxxxxxxxxxxxxxxx
+XMR_WALLET_RPC_PORT=8000
+XMR_DAEMON_URI=http://super.fast.node.xmr.pm:38089
+XMR_WALLET_NETWORK=stagenet
+
+SITE_NAME=nerochan
+SECRET_KEY=xxxxxxxxxxxxxxxxxxx
+STATS_TOKEN=xxxxxxxxxxxxxxxxxxxx
+SERVER_NAME=127.0.0.1:5000

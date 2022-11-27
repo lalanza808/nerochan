@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html>
+	{% include 'includes/head.html' %}
+	<body style="background-color: black; color: white;">
+		{% include 'includes/header.html' %}
+		{% block content %}{% endblock %}
+		{% include 'includes/debug.html' %}
+		<style>
+			body {
+				background-color: black;
+				color: white;
+			}
+			a, a:visited {
+				color: white;
+			}
+		</style>
+	</body>
+</html>

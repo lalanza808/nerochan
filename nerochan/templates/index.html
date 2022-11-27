@@ -1,0 +1,9 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+{% if current_user.is_authenticated %}
+	<p>logged in: {{ current_user.handle }}</p>
+{% endif %}
+
+{% endblock %}
