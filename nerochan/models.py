@@ -70,9 +70,9 @@ class Profile(pw.Model):
         database = db
 
 
-class Content(pw.Model):
+class Artwork(pw.Model):
     """
-    Content model is any uploaded content from a creator.
+    Artwork model is any uploaded content from a creator.
     """
     id = pw.AutoField()
     creator = pw.ForeignKeyField(User)
@@ -82,7 +82,7 @@ class Content(pw.Model):
     approved = pw.BooleanField(default=False)
     hidden = pw.BooleanField(default=False)
     title = pw.CharField()
-    description = pw.TextField()
+    description = pw.TextField(null=True)
 
     class Meta:
         database = db
@@ -97,7 +97,7 @@ class Transaction(pw.Model):
     tx_id = pw.CharField(unique=True)
     atomic_xmr = pw.BigIntegerField()
     to_address = pw.CharField()
-    content = pw.ForeignKeyField(Content)
+    content = pw.ForeignKeyField(Artwork)
 
     class Meta:
         database = db
