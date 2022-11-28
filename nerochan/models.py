@@ -2,7 +2,7 @@ from os import path
 from datetime import datetime
 from secrets import token_urlsafe
 
-from PIL import Image
+from PIL import Image, ImageSequence
 
 import peewee as pw
 
@@ -91,15 +91,29 @@ class Artwork(pw.Model):
     description = pw.TextField(null=True)
     
     def generate_thumbnail(self):
+        is_gif = self.image.endswith('.gif')
         _t = f'thumbnail-{self.image}'
         i = f'{config.DATA_PATH}/uploads/{self.image}'
         t = f'{config.DATA_PATH}/uploads/{_t}'
         if path.exists(t):
             return True
         try:
+            size = (150,150)
             image = Image.open(i)
-            image.thumbnail((150,150), Image.ANTIALIAS)
-            image.save(t, format=image.format, quality=75)
+            if is_gif:
+                frames = ImageSequence.Iterator(image)
+                def thumbnails(frames):
+                    for frame in frames:
+                        thumbnail = frame.copy()
+                        thumbnail.thumbnail(size, Image.ANTIALIAS)
+                        yield thumbnail
+                _frames = thumbnails(frames)
+                _image = next(_frames)
+                _image.info = image.info
+                _image.save(t, format=image.format, save_all=True, append_images=list(_frames), disposal=2)
+            else:
+                image.thumbnail(size, Image.ANTIALIAS)
+                image.save(t, format=image.format, quality=75)
             image.close()
             self.thumbnail = _t
             self.save()

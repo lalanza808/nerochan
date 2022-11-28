@@ -6,9 +6,9 @@ from nerochan.models import Artwork, User
 
 bp = Blueprint('artwork', 'artwork', url_prefix='/artwork')
 
-@bp.route('/<int:artwork_id>')
-def show(artwork_id):
-    artwork = Artwork.get_or_none(artwork_id)
+@bp.route('/<int:id>')
+def show(id):
+    artwork = Artwork.get_or_none(id)
     if not artwork:
         flash('That artwork does not exist.', 'warning')
         return redirect(url_for('main.index'))

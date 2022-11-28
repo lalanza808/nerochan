@@ -5,19 +5,21 @@
 <div class="container">
     <div class="row">
 		<h2>Latest Artworks</h2>
-		{% for artwork in feed['artwork'] %}
-			<p>{{ artwork.title }}</p>
-			<img src="{{ url_for('main.uploaded_file', filename=artwork.thumbnail) }}" width="120px">
+		{% for _artwork in feed['artwork'] | batch(4) %}
+			{% for artwork in _artwork %}
+				<a href="{{ url_for('artwork.show', id=artwork.id) }}">
+					<img src="{{ url_for('main.uploaded_file', filename=artwork.thumbnail) }}" width="150px">
+				</a>
+			{% endfor %}
 		{% endfor %}
 	</div>
 	<div class="row">
 		<h2>Latest Artists</h2>
 		{% for user in feed['users'] %}
-			<p>{{ user.handle }}</p>
+			<p><a href="{{ url_for('user.show', handle=user.handle) }}">{{ user.handle }}</a></p>
 		{% endfor %}
 	</div>
-    </div>
-  </div>
+</div>
 
 {% if current_user.is_authenticated %}
 	<p>logged in: {{ current_user.handle }}</p>

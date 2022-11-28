@@ -1,25 +1,17 @@
-<!DOCTYPE HTML>
-<html>
+{% extends 'includes/base.html' %}
 
-	{% include 'includes/head.html' %}
+{% block content %}
 
-	<body class="is-preload landing">
-		<div id="page-wrapper">
+{% set img = url_for('main.uploaded_file', filename=artwork.image) %}
+<div class="container">
+    <div class="row">
+		<h2>{{ artwork.title }}</h2>
+		<p>{{ artwork.creator.handle }}</p>
+		<a href="{{ img }}">
+			<img src="{{ img }}" width="450px">
+		</a>
+	</div>
+</div>
 
-				{% include 'includes/header.html' %}
 
-				{% if post %}
-          <h1>{{ post.title }}</h1>
-          <p>Posted: {{ post.post_date }}</p>
-          <p>Edited: {{ post.last_edit_date }}</p>
-          <p>{{ post.content }}</p>
-				{% endif %}
-
-				{% include 'includes/footer.html' %}
-
-		</div>
-
-		{% include 'includes/scripts.html' %}
-
-	</body>
-</html>
+{% endblock %}

@@ -63,6 +63,9 @@ def cli(app):
                         description=''
                     )
                     artwork.save()
-                    artwork.generate_thumbnail()
                     click.echo(f'[+] Created artwork {artwork.id} for {bn}')
+                if not path.exists(f'./data/uploads/thumbnail-{bn}'):
+                    artwork = Artwork.select().where(Artwork.image == bn).first()
+                    artwork.generate_thumbnail()
+                    click.echo(f'[+] Generated thumbnail for {bn}')
     return app
