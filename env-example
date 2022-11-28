@@ -8,5 +8,4 @@ XMR_WALLET_NETWORK=stagenet
 
 SITE_NAME=nerochan
 SECRET_KEY=xxxxxxxxxxxxxxxxxxx
-STATS_TOKEN=xxxxxxxxxxxxxxxxxxxx
 SERVER_NAME=127.0.0.1:5000

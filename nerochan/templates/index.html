@@ -4,7 +4,8 @@
 
 <div class="container">
     <div class="row">
-		<h2>Latest Artworks</h2>
+		<h2>artworks</h2>
+		{% if feed['artwork'] %}
 		{%- for _artwork in feed['artwork'] | batch(4) %}
 			{%- for artwork in _artwork %}
 				<a class="artworkLink" href="{{ url_for('artwork.show', id=artwork.id) }}">
@@ -13,12 +14,19 @@
 			{%- endfor %}
 		{%- endfor %}
 		<p><a href="{{ url_for('artwork.list') }}">...view all</a></p>
+		{% else %}
+		<p>There's nothing here yet...</p>
+		{% endif %}
 	</div>
 	<div class="row">
-		<h2>Latest Artists</h2>
+		<h2>artists</h2>
+		{% if feed['users'] %}
 		{% for user in feed['users'] %}
 			<p><a href="{{ url_for('user.show', handle=user.handle) }}">{{ user.handle }}</a></p>
 		{% endfor %}
+		{% else %}
+		<p>There's nothing here yet...</p>
+		{% endif %}
 	</div>
 </div>
 

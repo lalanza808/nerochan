@@ -58,7 +58,7 @@ class User(pw.Model):
 class Profile(pw.Model):
     """
     Profile model is for users to provide metadata about
-    themselves; Creators for their fans or even just the general public.
+    themselves; artists for their fans or even just the general public.
     Links to social media, contact info, portfolio sites, etc
     should go in here.
     """
@@ -77,10 +77,10 @@ class Profile(pw.Model):
 
 class Artwork(pw.Model):
     """
-    Artwork model is any uploaded content from a creator.
+    Artwork model is any uploaded content from a user.
     """
     id = pw.AutoField()
-    creator = pw.ForeignKeyField(User)
+    user = pw.ForeignKeyField(User)
     image = pw.CharField()
     upload_date = pw.DateTimeField(default=datetime.utcnow)
     last_edit_date = pw.DateTimeField(default=datetime.utcnow)
@@ -135,9 +135,13 @@ class Transaction(pw.Model):
     """
     id = pw.AutoField()
     tx_id = pw.CharField(unique=True)
-    atomic_xmr = pw.BigIntegerField()
+    tx_key = pw.CharField(unique=True)
+    atomic_xmr = pw.BigIntegerField(null=True)
     to_address = pw.CharField()
-    content = pw.ForeignKeyField(Artwork)
+    artwork = pw.ForeignKeyField(Artwork)
+    verified = pw.BooleanField(default=False)
+    create_date = pw.DateTimeField(default=datetime.utcnow)
+    tx_date = pw.DateTimeField(null=True)
 
     class Meta:
         database = db

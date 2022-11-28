@@ -21,27 +21,19 @@ def is_valid_xmr_address(form, field):
 
 
 class UserRegistration(FlaskForm):
-    handle = StringField('Handle:', validators=[DataRequired()], render_kw={'placeholder': 'online handle', 'class': 'form-control', 'type': 'text'})
-    wallet_address = StringField('Wallet Address:', validators=[DataRequired(), is_valid_xmr_address], render_kw={'placeholder': 'monero wallet address', 'class': 'form-control', 'type': 'text'})
+    handle = StringField('Handle:', validators=[DataRequired()], render_kw={'placeholder': 'online handle', 'class': 'u-full-width', 'type': 'text'})
+    wallet_address = StringField('Wallet Address:', validators=[DataRequired(), is_valid_xmr_address], render_kw={'placeholder': 'monero wallet address', 'class': 'u-full-width', 'type': 'text'})
 
 
 class UserLogin(FlaskForm):
-    handle = StringField('Handle:', validators=[DataRequired()], render_kw={'placeholder': 'online handle', 'class': 'form-control', 'type': 'text'})
+    handle = StringField('Handle:', validators=[DataRequired()], render_kw={'placeholder': 'online handle', 'class': 'u-full-width', 'type': 'text'})
 
 
 class UserChallenge(FlaskForm):
-    signature = StringField('Signature:', validators=[DataRequired()], render_kw={'placeholder': 'signed data', 'class': 'form-control', 'type': 'text'})
+    signature = StringField('Signature:', validators=[DataRequired()], render_kw={'placeholder': 'signed data', 'class': 'u-full-width', 'type': 'text'})
 
 
-class ConfirmPlatformSubscription(FlaskForm):
-    tx_id = StringField('TX ID:', validators=[DataRequired()], render_kw={'placeholder': 'TX ID', 'class': 'form-control', 'type': 'text'})
-    tx_key = StringField('TX Key:', validators=[DataRequired()], render_kw={'placeholder': 'TX Key', 'class': 'form-control', 'type': 'text'})
+class ConfirmTip(FlaskForm):
+    tx_id = StringField('TX ID:', validators=[DataRequired()], render_kw={'placeholder': 'TX ID', 'class': 'u-full-width', 'type': 'text'})
+    tx_key = StringField('TX Key:', validators=[DataRequired()], render_kw={'placeholder': 'TX Key', 'class': 'u-full-width', 'type': 'text'})
 
-
-class ConfirmCreatorSubscription(ConfirmPlatformSubscription):
-    wallet_address = StringField('Wallet Address:', validators=[DataRequired(), is_valid_xmr_address], render_kw={'placeholder': 'monero wallet address', 'class': 'form-control', 'type': 'text'})
-
-
-class CreateSubscription(FlaskForm):
-    price_xmr = FloatField('Price (XMR):', validators=[DataRequired()], render_kw={'placeholder': '.5', 'class': 'form-control', 'type': 'text'})
-    number_days = FloatField('Length (Days)', validators=[DataRequired()], render_kw={'placeholder': '30', 'class': 'form-control', 'type': 'text'})

@@ -7,7 +7,7 @@
     <div class="row">
 		<h2 class="no-margin"><strong>{{ artwork.title }}</strong></h2>
 		<h6 class="no-margin">
-			Posted by <a href="{{ url_for('user.show', handle=artwork.creator.handle) }}">{{ artwork.creator.handle }}</a> - {{ artwork.upload_date | humanize }}
+			posted by <a href="{{ url_for('user.show', handle=artwork.user.handle) }}">{{ artwork.user.handle }}</a> - {{ artwork.upload_date | humanize }}
 		</h6>
 		<p class="artworkDescription">{{ artwork.description }}</p>
 	</div>
@@ -15,46 +15,52 @@
 	<div class="row">
 		<div class="column one-half">
 			<a href="{{ img }}">
-				<img src="{{ img }}" width="100%">
+				<img src="{{ img }}" width="100%" style="padding-bottom: 2em;">
 			</a>
 		</div>
 		<div class="column one-half">
 			<h5>Send a Tip</h5>
-			<p class="walletAddress">{{ artwork.creator.wallet_address }}</p>
-			<form method="get">
+			<p class="walletAddress">{{ artwork.user.wallet_address }}</p>
+			<form method="post">
+				{{ form.csrf_token }}
 				<div class="row">
 					<div class="six columns">
-						<label for="txID">TX ID</label>
-						<input class="u-full-width" type="text" placeholder="..." id="txID" name="txID">
+						{{ form.tx_id.label }}
+						{{ form.tx_id }}
 					</div>
 					<div class="six columns">
-						<label for="txKey">TX Key</label>
-						<input class="u-full-width" type="text" placeholder="..." id="txKey" name="txKey">
+						{{ form.tx_key.label }}
+						{{ form.tx_key }}
 					</div>
 				</div>
 				<input class="button-primary" type="submit" value="Submit">
 			</form>
-			<table class="u-full-width">
-				<thead>
-				  <tr>
-					<th>TXID</th>
-					<th>XMR</th>
-					<th>Date</th>
-				  </tr>
-				</thead>
-				<tbody>
-				  <tr>
-					<td>e599...5429</td>
-					<td>.05</td>
-					<td>3 days ago</td>
-				  </tr>
-				  <tr>
-					<td>681a...e264</td>
-					<td>.25</td>
-					<td>28 days ago</td>
-				  </tr>
-				</tbody>
-			</table>
+			{% if txes_pending %}
+				<h6>{{ txes_pending }} tips pending</h6>
+			{% endif %}
+			{% if txes %}
+				<table class="u-full-width">
+					<thead>
+					<tr>
+						<th>TXID</th>
+						<th>XMR</th>
+						<th>Date</th>
+					</tr>
+					</thead>
+					<tbody>
+						{% for tx in txes %}
+							<tr>
+								<td><a href="{{ tx.tx_id | xmr_block_explorer }}" target="_blank">{{ tx.tx_id | shorten }}</a></td>
+								<td>{{ tx.atomic_xmr | atomic }}</td>
+								<td>{{ tx.tx_date | humanize }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<p>Total Received: <strong>{{ total | atomic }} XMR</strong></p>
+			{% else %}
+				<p>No tips confirmed yet...</p>
+			{% endif %}
 		</div>
 	</div>
 </div>
