@@ -1,25 +1,18 @@
-from flask import session, redirect, url_for, flash
+from flask import redirect, flash, request, url_for
 from flask_login import current_user
 from functools import wraps
-from nerochan.models import User, CreatorProfile, BackerProfile, Subscription
+from nerochan.models import User
 
-
-# def login_required(f):
-#     @wraps(f)
-#     def decorated_function(*args, **kwargs):
-#         if "auth" not in session or not session["auth"]:
-#             return redirect(url_for("auth.login"))
-#         return f(*args, **kwargs)
-#     return decorated_function
-
-def subscription_required(f):
+def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        print(current_user)
-        # m = Moderator.filter(username=session["auth"]["preferred_username"])
-        # if m:
-        #     return f(*args, **kwargs)
-        # else:
-        #     flash("You are not a moderator")
-        #     return redirect(url_for("index"))
+        if current_user.is_admin:
+            return f(*args, **kwargs)
+        else:
+            flash('Must be an admin to access that page.', 'warning')
+            if request.referrer:
+                u = request.referrer
+            else:
+                u = url_for('main.index')
+            return redirect(u)
     return decorated_function

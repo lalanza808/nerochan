@@ -18,6 +18,28 @@ def cli(app):
         model = peewee.Model.__subclasses__()
         db.create_tables(model)
     
+    @click.argument('handle')
+    @app.cli.command('add_admin')
+    def add_admin(handle):
+        user = User.select().where(User.handle == handle).first()
+        if not user:
+            click.echo('user does not exist')
+            return False
+        user.is_admin = True
+        user.save()
+        click.echo(f'{handle} is now an admin')
+    
+    @click.argument('handle')
+    @app.cli.command('remove_admin')
+    def remove_admin(handle):
+        user = User.select().where(User.handle == handle).first()
+        if not user:
+            click.echo('user does not exist')
+            return False
+        user.is_admin = False
+        user.save()
+        click.echo(f'{handle} is no longer an admin')
+    
     @app.cli.command('verify_tips')
     def verify_tips():
         txes = Transaction.select().where(Transaction.verified == False)

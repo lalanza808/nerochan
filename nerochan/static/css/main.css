@@ -8,6 +8,14 @@ a, a:visited {
     color: white;
 }
 
+.ml-2 {
+    margin-left: 2em;
+}
+
+ul {
+    list-style: circle;
+}
+
 .container-wide {
     max-width: 90%;
     margin-left: 3em;

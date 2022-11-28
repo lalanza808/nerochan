@@ -1,0 +1,33 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+		  <h1>admins</h1>
+      <p>Add a homie</p>
+      <form method="post" action="">
+        {{ user_form.csrf_token }}
+        <div class="row">
+					<div class="two columns">
+            {{ user_form.handle }}
+					</div>
+          <div class="two columns">
+            <input class="button-primary" type="submit" value="Submit">
+					</div>
+				</div>
+        <ul>
+          {%- for field, errors in user_form.errors.items() %}
+            <li>{{ ', '.join(errors) }}</li>
+          {%- endfor %}
+        </ul>
+      </form>
+      <ul>
+        {% for admin in admins %}
+          <li><h6>{{ admin.handle }} - <a href="?remove={{ admin.handle }}">remove</a></h6></li>
+        {% endfor %}
+      </ul>
+	</div>
+</div>
+
+{% endblock %}

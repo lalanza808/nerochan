@@ -2,7 +2,7 @@ from flask import Blueprint, render_template
 from flask import flash, redirect, url_for
 from flask_login import login_user, logout_user, current_user
 
-from nerochan.forms import UserLogin, UserRegistration, UserChallenge
+from nerochan.forms import UserForm, UserRegistration, UserChallenge
 from nerochan.helpers import make_wallet_rpc
 from nerochan.models import User
 
@@ -38,7 +38,7 @@ def register():
 
 @bp.route("/login", methods=["GET", "POST"])
 def login():
-    form = UserLogin()
+    form = UserForm()
     if current_user.is_authenticated:
         flash('Already logged in.')
         return redirect(url_for('main.index'))

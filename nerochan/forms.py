@@ -3,6 +3,7 @@ from wtforms import StringField, FloatField
 from wtforms.validators import DataRequired, ValidationError
 from monero.address import address
 
+from nerochan.models import User
 from nerochan import config
 
 
@@ -10,7 +11,6 @@ def is_valid_xmr_address(form, field):
     try:
         # Ensure the provided address is valid address/subaddress/integrated address
         a = address(field.data)
-        print(config.XMR_WALLET_NETWORK)
         # Ensure the provided address matches the network that the application's wallet is using
         if not config.XMR_WALLET_NETWORK.startswith(a.net):
             raise ValidationError('Provided Monero address does not match the configured network. Application: {}. Provided: {}'.format(
@@ -19,14 +19,23 @@ def is_valid_xmr_address(form, field):
     except ValueError:
         raise ValidationError('Invalid Monero address provided')
 
+def is_valid_user(form, field):
+    try:
+        u = User.select().where(User.handle == field.data).first()
+        if not u:
+            raise ValidationError('User does not exist')
+        return True
+    except ValueError:
+        raise ValidationError('Error looking up user')
+
 
 class UserRegistration(FlaskForm):
     handle = StringField('Handle:', validators=[DataRequired()], render_kw={'placeholder': 'online handle', 'class': 'u-full-width', 'type': 'text'})
     wallet_address = StringField('Wallet Address:', validators=[DataRequired(), is_valid_xmr_address], render_kw={'placeholder': 'monero wallet address', 'class': 'u-full-width', 'type': 'text'})
 
 
-class UserLogin(FlaskForm):
-    handle = StringField('Handle:', validators=[DataRequired()], render_kw={'placeholder': 'online handle', 'class': 'u-full-width', 'type': 'text'})
+class UserForm(FlaskForm):
+    handle = StringField('Handle:', validators=[DataRequired(), is_valid_user], render_kw={'placeholder': 'handle', 'class': 'u-full-width', 'type': 'text'})
 
 
 class UserChallenge(FlaskForm):

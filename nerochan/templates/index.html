@@ -4,7 +4,7 @@
 
 <div class="container">
     <div class="row">
-		<h2>artworks</h2>
+		<h1>artworks</h1>
 		{% if feed['artwork'] %}
 		{%- for _artwork in feed['artwork'] | batch(4) %}
 			{%- for artwork in _artwork %}
@@ -19,7 +19,7 @@
 		{% endif %}
 	</div>
 	<div class="row">
-		<h2>artists</h2>
+		<h1>artists</h1>
 		{% if feed['users'] %}
 		{% for user in feed['users'] %}
 			<p><a href="{{ url_for('user.show', handle=user.handle) }}">{{ user.handle }}</a></p>
