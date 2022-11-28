@@ -11,6 +11,9 @@ setup: ## Establish local environment with dependencies installed
 	.venv/bin/pip install -r requirements.txt
 	mkdir -p data/uploads
 
+setup-dev: ## Install development dependencies
+	.venv/bin/pip install -r requirements-dev.txt
+
 build: ## Build containers
 	docker-compose build
 

@@ -5,13 +5,14 @@
 <div class="container">
     <div class="row">
 		<h2>Latest Artworks</h2>
-		{% for _artwork in feed['artwork'] | batch(4) %}
-			{% for artwork in _artwork %}
-				<a href="{{ url_for('artwork.show', id=artwork.id) }}">
+		{%- for _artwork in feed['artwork'] | batch(4) %}
+			{%- for artwork in _artwork %}
+				<a class="artworkLink" href="{{ url_for('artwork.show', id=artwork.id) }}">
 					<img src="{{ url_for('main.uploaded_file', filename=artwork.thumbnail) }}" width="150px">
 				</a>
-			{% endfor %}
-		{% endfor %}
+			{%- endfor %}
+		{%- endfor %}
+		<p><a href="{{ url_for('artwork.list') }}">...view all</a></p>
 	</div>
 	<div class="row">
 		<h2>Latest Artists</h2>

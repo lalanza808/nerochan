@@ -1,18 +1,16 @@
-<form method="POST" action="">
+<form method="post" action="">
     {% for f in form %}
         {% if f.name == 'csrf_token' %}
             {{ f }}
         {% else %}
-            <div class="form-group">
-                {{ f.label }}
-                {{ f }}
-            </div>
+            {{ f.label }}
+            {{ f }}
         {% endif %}
     {% endfor %}
     <ul>
-      {% for field, errors in form.errors.items() %}
+      {%- for field, errors in form.errors.items() %}
         <li>{{ form[field].label }}: {{ ', '.join(errors) }}</li>
-      {% endfor %}
+      {%- endfor %}
     </ul>
-    <input type="submit" value="Confirm" class="btn btn-link btn-outline btn-xl">
+    <input type="submit" value="Submit" class="button-primary">
 </form>

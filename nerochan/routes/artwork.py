@@ -6,6 +6,10 @@ from nerochan.models import Artwork, User
 
 bp = Blueprint('artwork', 'artwork', url_prefix='/artwork')
 
+@bp.route('')
+def list():
+    return 'show all artwork'
+
 @bp.route('/<int:id>')
 def show(id):
     artwork = Artwork.get_or_none(id)

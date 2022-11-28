@@ -1,4 +1,6 @@
 import click
+import lorem
+
 from os import path, makedirs
 from urllib.request import urlopen
 
@@ -28,7 +30,23 @@ def cli(app):
                 'wallet': '77toDDnVmSrWMZ5tS17UWXcxQVkD6LtNSArVwzsWdE176oDbYtPTiAqExjDZWGE5KwKPY7Kd1BcWYfCnJuL2RfcqA1gzoEj',
                 'art': [
                     'https://www.monerochan.art/commissions/hammock.png',
-                    'https://www.monerochan.art/commissions/assaultrifle.png'
+                    'https://www.monerochan.art/commissions/assaultrifle.png',
+                    'https://www.monerochan.art/thumbnails/vtubing.png',
+                    'https://www.monerochan.art/commissions/ribbons.jpg',
+                    'https://www.monerochan.art/commissions/mining.jpg',
+                    'https://www.monerochan.art/commissions/wownerochan_headpat.png',
+                    'https://www.monerochan.art/commissions/wownerochan.jpg'
+                ]
+            },
+            'gemini': {
+                'wallet': '78TanhCTvw4V8HkY3vD49A5EiyeGCzCHQUm59sByukTcffZPf3QHoK8PDg8WpMUc6VGwqxTu65HvwCUfB2jZutb6NKpjArk',
+                'art': [
+                    'https://www.monerochan.art/commissions/cheerleader.jpg',
+                    'https://www.monerochan.art/commissions/maidnero-chan.png',
+                    'https://www.monerochan.art/commissions/dandelion.png',
+                    'https://www.monerochan.art/commissions/volleyball_1.jpg',
+                    'https://www.monerochan.art/commissions/volleyball_2.jpg',
+                    'https://www.monerochan.art/commissions/virgin_killer.png'
                 ]
             }
         }
@@ -59,8 +77,8 @@ def cli(app):
                         creator=_user,
                         image=bn,
                         approved=True,
-                        title=f'i made {bn}',
-                        description=''
+                        title=lorem.sentence(),
+                        description=lorem.sentence()
                     )
                     artwork.save()
                     click.echo(f'[+] Created artwork {artwork.id} for {bn}')

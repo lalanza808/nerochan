@@ -5,11 +5,57 @@
 {% set img = url_for('main.uploaded_file', filename=artwork.image) %}
 <div class="container">
     <div class="row">
-		<h2>{{ artwork.title }}</h2>
-		<p>{{ artwork.creator.handle }}</p>
-		<a href="{{ img }}">
-			<img src="{{ img }}" width="450px">
-		</a>
+		<h2 class="no-margin"><strong>{{ artwork.title }}</strong></h2>
+		<h6 class="no-margin">
+			Posted by <a href="{{ url_for('user.show', handle=artwork.creator.handle) }}">{{ artwork.creator.handle }}</a> - {{ artwork.upload_date | humanize }}
+		</h6>
+		<p class="artworkDescription">{{ artwork.description }}</p>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="column one-half">
+			<a href="{{ img }}">
+				<img src="{{ img }}" width="100%">
+			</a>
+		</div>
+		<div class="column one-half">
+			<h5>Send a Tip</h5>
+			<p class="walletAddress">{{ artwork.creator.wallet_address }}</p>
+			<form method="get">
+				<div class="row">
+					<div class="six columns">
+						<label for="txID">TX ID</label>
+						<input class="u-full-width" type="text" placeholder="..." id="txID" name="txID">
+					</div>
+					<div class="six columns">
+						<label for="txKey">TX Key</label>
+						<input class="u-full-width" type="text" placeholder="..." id="txKey" name="txKey">
+					</div>
+				</div>
+				<input class="button-primary" type="submit" value="Submit">
+			</form>
+			<table class="u-full-width">
+				<thead>
+				  <tr>
+					<th>TXID</th>
+					<th>XMR</th>
+					<th>Date</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr>
+					<td>e599...5429</td>
+					<td>.05</td>
+					<td>3 days ago</td>
+				  </tr>
+				  <tr>
+					<td>681a...e264</td>
+					<td>.25</td>
+					<td>28 days ago</td>
+				  </tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
 

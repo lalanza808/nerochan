@@ -2,7 +2,13 @@
 
 {% block content %}
 
-<h2>Register</h2>
-{% include 'includes/form.html' %}
+
+<div class="container">
+    <div class="row">
+        <h1>register</h1>
+        {% include 'includes/form.html' %}
+        <a href="{{ url_for('auth.login') }}">Login</a>
+    </div>
+</div>
 
 {% endblock %}

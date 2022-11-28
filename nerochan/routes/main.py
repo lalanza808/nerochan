@@ -12,11 +12,11 @@ bp = Blueprint('main', 'main')
 def index():
     users = User.select().where(
         User.is_approved == True
-    ).order_by(User.register_date.desc())
+    ).order_by(User.register_date.desc()).limit(10)
     artwork = Artwork.select().where(
         Artwork.approved == True,
         Artwork.hidden == False
-    ).order_by(Artwork.upload_date.desc())
+    ).order_by(Artwork.upload_date.desc()).limit(10)
     feed = {
         'users': users,
         'artwork': artwork

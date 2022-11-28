@@ -25,7 +25,7 @@ class User(pw.Model):
     register_date = pw.DateTimeField(default=datetime.utcnow)
     last_login_date = pw.DateTimeField(default=datetime.utcnow)
     handle = pw.CharField(unique=True)
-    wallet_address = pw.CharField(unique=True)
+    wallet_address = pw.CharField(unique=True, null=False)
     challenge = pw.CharField(default=gen_challenge)
     is_admin = pw.BooleanField(default=False)
     is_mod = pw.BooleanField(default=False)
@@ -82,13 +82,16 @@ class Artwork(pw.Model):
     id = pw.AutoField()
     creator = pw.ForeignKeyField(User)
     image = pw.CharField()
-    thumbnail = pw.CharField(null=True)
     upload_date = pw.DateTimeField(default=datetime.utcnow)
     last_edit_date = pw.DateTimeField(default=datetime.utcnow)
     approved = pw.BooleanField(default=False)
     hidden = pw.BooleanField(default=False)
     title = pw.CharField()
     description = pw.TextField(null=True)
+
+    @property
+    def thumbnail(self):
+        return f'thumbnail-{self.image}'
     
     def generate_thumbnail(self):
         is_gif = self.image.endswith('.gif')
@@ -113,7 +116,7 @@ class Artwork(pw.Model):
                 _image.save(t, format=image.format, save_all=True, append_images=list(_frames), disposal=2)
             else:
                 image.thumbnail(size, Image.ANTIALIAS)
-                image.save(t, format=image.format, quality=75)
+                image.save(t, format=image.format)
             image.close()
             self.thumbnail = _t
             self.save()

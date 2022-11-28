@@ -1,0 +1,25 @@
+<nav class="navbar">
+  <div class="container">
+    <ul class="navbar-list">
+      <li class="navbar-item"><a class="navbar-link" href="{{ url_for('main.index') }}">Home</a></li>
+      <li class="navbar-item"><a class="navbar-link" href="{{ url_for('main.about') }}">About</a></li>
+      {%- if current_user.is_authenticated %}
+      <li class="navbar-item"><a class="navbar-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
+      {%- else %}
+      <li class="navbar-item"><a class="navbar-link" href="{{ url_for('auth.login') }}">Login</a></li>
+      {%- endif %}
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <p>
+    {% for category, message in messages %}
+      <p>{{ message }} - {{ category }}</p>
+    {% endfor %}
+  </p>
+  {% endif %}
+{% endwith %}
+</div>
