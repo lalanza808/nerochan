@@ -6,7 +6,7 @@ from datetime import datetime, timedelta, timezone
 from os import path, makedirs
 from urllib.request import urlopen
 
-from nerochan.helpers import make_wallet_rpc, daemon
+from nerochan.helpers import make_wallet_rpc, get_daemon
 from nerochan.models import User, Artwork, Transaction
 
 
@@ -52,7 +52,7 @@ def cli(app):
             try:
                 res = make_wallet_rpc('check_tx_key', data)
                 if res['in_pool'] is False:
-                    txdata = daemon.transactions([tx.tx_id])[0]
+                    txdata = get_daemon().transactions([tx.tx_id])[0]
                     d = txdata.timestamp.astimezone(timezone.utc)
                     tx.atomic_xmr = res['received']
                     tx.tx_date = d

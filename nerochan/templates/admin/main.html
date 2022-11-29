@@ -3,63 +3,34 @@
 {% block content %}
 
 <div class="container">
-    <div class="row">
-		  <h1>admins</h1>
-      <p>
-        Add a homie to be an admin. <br />
-        Admins can manage other admins as well as hide artwork, <br />
-        approve/reject artwork, ban artists, and verify artists.
-      </p>
-      <form method="post" action="">
-        {{ admin_form.csrf_token }}
-        <div class="row">
-					<div class="two columns">
-            {{ admin_form.handle }}
-					</div>
-          <div class="two columns">
-            <input class="button-primary" type="submit" value="Submit">
-					</div>
-				</div>
-        <ul>
-          {%- for field, errors in admin_form.errors.items() %}
-            <li>{{ ', '.join(errors) }}</li>
-          {%- endfor %}
-        </ul>
-      </form>
-      <ul>
-        {% for admin in admins %}
-          <li><h6>{{ admin.handle }} - <a href="?remove={{ admin.handle }}">remove</a></h6></li>
-        {% endfor %}
-      </ul>
-	</div>
-  <hr>
   <div class="row">
-    <h1>artists</h1>
-    <p>
-      Verified artists will skip the queue <br />
-      and have their artwork displayed immediately. 
-    </p>
-    <form method="post" action="">
-      {{ artist_form.csrf_token }}
-      <div class="row">
-        <div class="two columns">
-          {{ artist_form.handle }}
-        </div>
-        <div class="two columns">
-          <input class="button-primary" type="submit" value="Submit">
-        </div>
-      </div>
-      <ul>
-        {%- for field, errors in artist_form.errors.items() %}
-          <li>{{ ', '.join(errors) }}</li>
-        {%- endfor %}
-      </ul>
-    </form>
-    <ul>
-      {% for artist in artists %}
-        <li><h6>{{ artist.handle }} - <a href="?unverify={{ artist.handle }}">remove</a></h6></li>
-      {% endfor %}
-    </ul>
+    <div class="three columns">
+      <h1>{{ admins }}</h1>
+      <h5>admin{% if admins != 1 %}s{% endif %}</h5>
+    </div>
+    <div class="three columns">
+      <h1>{{ artists }}</h1>
+      <h5>verified<br />artist{% if artists != 1 %}s{% endif %}</h5>
+    </div>
+    <div class="three columns">
+      <h1>{{ active_artworks }}</h1>
+      <h5>active<br />artwork{% if active_artworks != 1 %}s{% endif %}</h5>
+    </div>
+    <div class="three columns">
+      <h1>{{ pending_artworks }}</h1>
+      <h5>pending<br />artwork{% if pending_artworks != 1 %}s{% endif %}</h5>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="three columns">
+      <h1>{{ confirmed_tips }}</h1>
+      <h5>confirmed<br />tip{% if confirmed_tips != 1 %}s{% endif %}</h5>
+    </div>
+    <div class="three columns">
+      <h1>{{ pending_tips }}</h1>
+      <h5>pending<br />tip{% if pending_tips != 1 %}s{% endif %}</h5>
+    </div>
   </div>
 </div>
 
