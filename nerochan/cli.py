@@ -105,7 +105,7 @@ def cli(app):
                 u = User(
                     handle=user,
                     wallet_address=data[user]['wallet'],
-                    is_approved=True
+                    is_verified=True
                 )
                 u.save()
                 _user = u

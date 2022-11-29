@@ -29,7 +29,7 @@ class User(pw.Model):
     challenge = pw.CharField(default=gen_challenge)
     is_admin = pw.BooleanField(default=False)
     is_mod = pw.BooleanField(default=False)
-    is_approved = pw.BooleanField(default=False)
+    is_verified = pw.BooleanField(default=False)
     is_banned = pw.BooleanField(default=False)
 
     @property

@@ -11,7 +11,7 @@ bp = Blueprint('main', 'main')
 @bp.route('/')
 def index():
     users = User.select().where(
-        User.is_approved == True
+        User.is_verified == True
     ).order_by(User.register_date.desc()).limit(10)
     artwork = Artwork.select().where(
         Artwork.approved == True,
