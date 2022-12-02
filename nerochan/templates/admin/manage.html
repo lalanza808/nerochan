@@ -1,0 +1,49 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <h1>{{ item }}</h1>
+        {% if item == 'admins' %}
+            <p>
+                Add a homie to be an admin. <br />
+                Admins can manage other admins as well as hide artwork, <br />
+                approve/reject artwork, ban artists, and verify artists.
+            </p>
+        {% elif item == 'artists' %}
+            <p>
+                Verified artists will skip the queue <br />
+                and have their artwork displayed immediately. 
+            </p>
+        {% endif %}
+        <form method="post" action="">
+            {{ form.csrf_token }}
+            <div class="row">
+                <div class="three columns">
+                    {{ form.handle }}
+                </div>
+                <div class="two columns">
+                    <input class="button-primary" type="submit" value="Submit">
+                </div>
+            </div>
+            <ul>
+            {%- for field, errors in form.errors.items() %}
+                <li>{{ ', '.join(errors) }}</li>
+            {%- endfor %}
+            </ul>
+        </form>
+        <ul>
+            {% for item in items %}
+                <li>
+                    <h6>{{ item.handle }} - <a href="?{{ action }}={{ item.handle }}">{{ action }}</a></h6>
+                </li>
+            {% endfor %}
+        </ul>
+	</div>
+    <div class="row mt-4">
+        <a href="{{ url_for('admin.dashboard') }}">...back to admin</a>
+    </div>
+</div>
+
+{% endblock %}

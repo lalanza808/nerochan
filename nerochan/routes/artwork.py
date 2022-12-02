@@ -12,6 +12,11 @@ bp = Blueprint('artwork', 'artwork', url_prefix='/artwork')
 def list():
     return 'show all artwork'
 
+@bp.route('/pending')
+def pending():
+    return 'show pending artwork'
+
+
 @bp.route('/<int:id>', methods=['GET', 'POST'])
 def show(id):
     form = ConfirmTip()

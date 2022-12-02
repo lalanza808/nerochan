@@ -13,7 +13,7 @@
 				</a>
 			{%- endfor %}
 		{%- endfor %}
-		<p><a href="{{ url_for('artwork.list') }}">...view all</a></p>
+		<p class="mt-4"><a href="{{ url_for('artwork.list') }}">...view all</a></p>
 		{% else %}
 		<p>There's nothing here yet...</p>
 		{% endif %}
@@ -24,15 +24,41 @@
 		{% for user in feed['users'] %}
 			<p><a href="{{ url_for('user.show', handle=user.handle) }}">{{ user.handle }}</a></p>
 		{% endfor %}
+		<p class="mt-4"><a href="{{ url_for('user.list') }}">...view all</a></p>
+		{% else %}
+		<p>There's nothing here yet...</p>
+		{% endif %}
+	</div>
+	<div class="row">
+		<h1>tips</h1>
+		{% if feed['tips'] %}
+		<table class="u-full-width">
+			<thead>
+			<tr>
+				<th>TXID</th>
+				<th>XMR</th>
+				<th>Artwork</th>
+				<th>Artist</th>
+				<th>Date</th>
+			</tr>
+			</thead>
+			<tbody>
+				{% for tx in feed['tips'] %}
+					<tr>
+						<td><a href="{{ tx.tx_id | xmr_block_explorer }}" target="_blank">{{ tx.tx_id | shorten }}</a></td>
+						<td>{{ tx.atomic_xmr | atomic }}</td>
+						<td><a href="{{ url_for('artwork.show', id=tx.artwork.id) }}">{{ tx.artwork.id }}</a></td>
+						<td><a href="{{ url_for('user.show', handle=tx.artwork.user.handle) }}">{{ tx.artwork.user.handle }}</a></td>
+						<td>{{ tx.tx_date | humanize }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<p class="mt-4"><a href="{{ url_for('main.tips') }}">...view all</a></p>
 		{% else %}
 		<p>There's nothing here yet...</p>
 		{% endif %}
 	</div>
 </div>
-
-{% if current_user.is_authenticated %}
-	<p>logged in: {{ current_user.handle }}</p>
-{% endif %}
-
 
 {% endblock %}

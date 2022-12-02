@@ -1,0 +1,34 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+		<h1>tips</h1>
+		<h6>{{ total | atomic }} XMR has been confirmed as sent directly to the artists on this platform.</h6>
+		<table class="u-full-width">
+			<thead>
+			<tr>
+				<th>TXID</th>
+				<th>XMR</th>
+				<th>Artwork</th>
+				<th>Artist</th>
+				<th>Date</th>
+			</tr>
+			</thead>
+			<tbody>
+				{% for tx in tips %}
+					<tr>
+						<td><a href="{{ tx.tx_id | xmr_block_explorer }}" target="_blank">{{ tx.tx_id | shorten }}</a></td>
+						<td>{{ tx.atomic_xmr | atomic }}</td>
+						<td><a href="{{ url_for('artwork.show', id=tx.artwork.id) }}">{{ tx.artwork.id }}</a></td>
+						<td><a href="{{ url_for('user.show', handle=tx.artwork.user.handle) }}">{{ tx.artwork.user.handle }}</a></td>
+						<td>{{ tx.tx_date | humanize }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{% endblock %}

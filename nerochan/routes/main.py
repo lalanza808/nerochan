@@ -2,7 +2,7 @@ from os import path
 
 from flask import Blueprint, render_template, send_from_directory
 
-from nerochan.models import Artwork, User
+from nerochan.models import Artwork, User, Transaction
 from nerochan import config
 
 
@@ -17,9 +17,13 @@ def index():
         Artwork.approved == True,
         Artwork.hidden == False
     ).order_by(Artwork.upload_date.desc()).limit(10)
+    transactions = Transaction.select().where(
+        Transaction.verified == True
+    ).order_by(Transaction.tx_date.desc()).limit(10)
     feed = {
         'users': users,
-        'artwork': artwork
+        'artwork': artwork,
+        'tips': transactions
     }
     return render_template(
         'index.html',
@@ -34,6 +38,17 @@ def about():
 def uploaded_file(filename):
     file_path = path.join(config.DATA_PATH, 'uploads')
     return send_from_directory(file_path, filename)
+
+@bp.route('/tips')
+def tips():
+    tips = Transaction.select().where(Transaction.verified == True).order_by(Transaction.tx_date.desc())
+    total = sum([i.atomic_xmr for i in tips])
+    return render_template(
+        'tips.html',
+        tips=tips,
+        total=total
+    )
+
 
 # most tipped artworks
 # most tipped artists

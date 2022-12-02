@@ -1,0 +1,55 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="four columns">
+      <h1>{{ admins }}</h1>
+      <h5>
+        <a href="{{ url_for('admin.manage', item='admins') }}">
+          admin{% if admins != 1 %}s{% endif %}
+        </a>
+      </h5>
+    </div>
+    <div class="four columns">
+      <h1>{{ artists }}</h1>
+      <h5>
+        <a href="{{ url_for('admin.manage', item='artists') }}">
+          verified<br />artist{% if artists != 1 %}s{% endif %}
+        </a>
+      </h5>
+    </div>
+    <div class="three columns">
+      <h1>{{ pending_artworks }}</h1>
+      <h5>
+        <a href="{{ url_for('artwork.pending') }}">
+          pending<br />artwork{% if pending_artworks != 1 %}s{% endif %}</h5>
+        </a>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="four columns">
+      <h1>{{ confirmed_tips }}</h1>
+      <h5>
+        <a href="{{ url_for('main.tips') }}">
+          confirmed<br />tip{% if confirmed_tips != 1 %}s{% endif %}</h5>
+        </a>
+    </div>
+    <div class="four columns">
+      <h1>{{ pending_tips }}</h1>
+      <h5>pending<br />tip{% if pending_tips != 1 %}s{% endif %}</h5>
+    </div>
+    <div class="four columns">
+      <h1>{{ active_artworks }}</h1>
+      <h5>
+        <a href="{{ url_for('artwork.list') }}">
+          active<br />artwork{% if active_artworks != 1 %}s{% endif %}
+        </a>
+      </h5>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

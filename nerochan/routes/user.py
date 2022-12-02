@@ -6,6 +6,10 @@ from nerochan.models import User
 
 bp = Blueprint('user', 'user')
 
+@bp.route('/users')
+def list():
+    return 'users list'
+
 @bp.route('/user/<handle>')
 def show(handle: str):
     user = User.select().where(User.handle == handle).first()
