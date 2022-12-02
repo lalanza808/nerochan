@@ -4,6 +4,7 @@
       <li class="navbar-item"><a class="navbar-link" href="{{ url_for('main.index') }}">Home</a></li>
       <li class="navbar-item"><a class="navbar-link" href="{{ url_for('main.about') }}">About</a></li>
       {%- if current_user.is_authenticated %}
+        <li class="navbar-item"><a class="navbar-link" href="{{ url_for('artwork.create') }}">Upload</a></li>
         {%- if current_user.is_admin %}
           <li class="navbar-item"><a class="navbar-link" href="{{ url_for('admin.dashboard') }}">Admin</a></li>
         {% endif %}

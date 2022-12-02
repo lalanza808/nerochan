@@ -1,9 +1,11 @@
 from pathlib import Path
+from secrets import token_urlsafe
 
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 from flask_login import login_required, current_user
+from werkzeug.utils import secure_filename
 
-from nerochan.forms import ConfirmTip
+from nerochan.forms import ConfirmTip, CreateArtwork
 from nerochan.decorators import admin_required
 from nerochan.models import Artwork, Transaction
 from nerochan import config
@@ -65,12 +67,16 @@ def manage(id, action):
         elif not artwork.hidden:
             flash('Cannot delete an artwork unless it is hidden first', 'warning')
             return redirect(url_for('artwork.show', id=artwork.id))
-        base = Path(config.DATA_PATH).joinpath('uploads')
+        base = Path(config.DATA_PATH, 'uploads')
         base.joinpath(artwork.image).unlink(missing_ok=True)
         base.joinpath(artwork.thumbnail).unlink(missing_ok=True)
         artwork.delete_instance()
         flash('Artwork has been deleted from the system.', 'success')
         return redirect(url_for('artwork.hidden'))
+    elif action == 'regenerate_thumbnail':
+        artwork.generate_thumbnail()
+        flash(f'Generated new thumbnail for artwork {artwork.id}', 'success')
+        return redirect(url_for('artwork.show', id=artwork.id))
     return redirect(url_for('artwork.pending'))
 
 
@@ -116,7 +122,37 @@ def show(id):
         form=form
     )
 
-@bp.route('/new', methods=['GET', 'POST'])
+@bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
-    return 'upload your artwork'
+    form = CreateArtwork()
+    if form.validate_on_submit():
+        rand = token_urlsafe(12)
+        f = form.content.data
+        filename = secure_filename(f'{rand}-{f.filename}')
+        try:
+            f.save(Path(config.DATA_PATH, 'uploads', filename))
+        except Exception as e:
+            flash(f'There was an issue saving the file: {e}')
+            return redirect(request.referrer)
+
+        artwork = Artwork(
+            user=current_user,
+            image=filename,
+            approved=current_user.is_verified,
+            nsfw=form.nsfw.data,
+            title=form.title.data,
+            description=form.description.data
+        )
+        artwork.save()
+        artwork.generate_thumbnail()
+        if current_user.is_verified:
+            return redirect(url_for('artwork.show', id=artwork.id))
+        else:
+            flash('Artwork has been posted! Please wait for an admin to review and approve it.', 'success')
+            return redirect(url_for('main.index'))
+
+    return render_template(
+        'artwork/create.html',
+        form=form
+    )

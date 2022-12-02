@@ -2,7 +2,7 @@ from os import path
 from datetime import datetime
 from secrets import token_urlsafe
 
-from PIL import Image, ImageSequence
+from PIL import Image, ImageSequence, ImageFilter
 
 import peewee as pw
 
@@ -86,6 +86,7 @@ class Artwork(pw.Model):
     last_edit_date = pw.DateTimeField(default=datetime.utcnow)
     approved = pw.BooleanField(default=False)
     hidden = pw.BooleanField(default=False)
+    nsfw = pw.BooleanField(default=False)
     title = pw.CharField()
     description = pw.TextField(null=True)
 
@@ -98,8 +99,6 @@ class Artwork(pw.Model):
         _t = f'thumbnail-{self.image}'
         i = f'{config.DATA_PATH}/uploads/{self.image}'
         t = f'{config.DATA_PATH}/uploads/{_t}'
-        if path.exists(t):
-            return True
         try:
             size = (150,150)
             image = Image.open(i)
@@ -109,14 +108,21 @@ class Artwork(pw.Model):
                     for frame in frames:
                         thumbnail = frame.copy()
                         thumbnail.thumbnail(size, Image.ANTIALIAS)
+                        if self.nsfw:
+                            thumbnail = thumbnail.filter(ImageFilter.GaussianBlur(radius = 4))
                         yield thumbnail
                 _frames = thumbnails(frames)
                 _image = next(_frames)
                 _image.info = image.info
+                
                 _image.save(t, format=image.format, save_all=True, append_images=list(_frames), disposal=2)
             else:
                 image.thumbnail(size, Image.ANTIALIAS)
+                if self.nsfw:
+                    image = image.filter(ImageFilter.GaussianBlur(radius = 4))
                 image.save(t, format=image.format)
+            
+            
             image.close()
             self.thumbnail = _t
             self.save()

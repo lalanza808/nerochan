@@ -27,6 +27,7 @@ DATA_PATH = getenv('DATA_PATH', f'{getcwd()}/data')
 SESSION_LENGTH = int(getenv('SESSION_LENGTH', 300))
 PERMANENT_SESSION_LIFETIME = timedelta(minutes=SESSION_LENGTH)
 MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50 MB
+ALLOWED_UPLOADS = ['jpg', 'jpeg', 'png', 'svg', 'gif', 'mp4', 'webm']
 
 # Development
 TEMPLATES_AUTO_RELOAD = True

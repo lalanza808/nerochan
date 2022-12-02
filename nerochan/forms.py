@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField
+from wtforms import StringField, BooleanField
 from wtforms.validators import DataRequired, ValidationError
+from flask_wtf.file import FileField, FileRequired, FileAllowed
 from monero.address import address
 
 from nerochan.models import User
@@ -46,3 +47,9 @@ class ConfirmTip(FlaskForm):
     tx_id = StringField('TX ID:', validators=[DataRequired()], render_kw={'placeholder': 'TX ID', 'class': 'u-full-width', 'type': 'text'})
     tx_key = StringField('TX Key:', validators=[DataRequired()], render_kw={'placeholder': 'TX Key', 'class': 'u-full-width', 'type': 'text'})
 
+
+class CreateArtwork(FlaskForm):
+    title = StringField('Title:', validators=[DataRequired()], render_kw={'placeholder': 'Title', 'class': 'u-full-width', 'type': 'text'})
+    description = StringField('Description:', validators=[], render_kw={'placeholder': 'Description', 'class': 'u-full-width', 'type': 'text'})
+    nsfw = BooleanField('NSFW:')
+    content = FileField('Upload:', validators=[FileRequired(), FileAllowed(config.ALLOWED_UPLOADS)])
