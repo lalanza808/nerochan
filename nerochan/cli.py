@@ -95,7 +95,10 @@ def cli(app):
                     'https://www.monerochan.art/commissions/dandelion.png',
                     'https://www.monerochan.art/commissions/volleyball_1.jpg',
                     'https://www.monerochan.art/commissions/volleyball_2.jpg',
-                    'https://www.monerochan.art/commissions/virgin_killer.png'
+                    'https://www.monerochan.art/commissions/virgin_killer.png',
+                    'https://www.monerochan.art/commissions/mememe_bikini.gif',
+                    'https://www.monerochan.art/commissions/lofi_monerochan.mp4',
+                    'https://www.monerochan.art/commissions/Doompa.webm'
                 ]
             }
         }
@@ -125,7 +128,7 @@ def cli(app):
                     artwork = Artwork(
                         user=_user,
                         image=bn,
-                        approved=True,
+                        approved=False,
                         title=lorem.sentence(),
                         description=lorem.sentence()
                     )

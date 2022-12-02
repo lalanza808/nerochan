@@ -1,0 +1,27 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+		<h1>pending</h1>
+        <p>
+            These artworks were uploaded by users who have not yet been verified.
+            <br/>
+            They will not be shown to the public until approved by an admin.
+        </p>
+        {% if artwork %}
+		{%- for _artwork in artwork | batch(4) %}
+			{%- for art in _artwork %}
+				<a class="artworkLink" href="{{ url_for('artwork.show', id=art.id) }}">
+					<img src="{{ url_for('main.uploaded_file', filename=art.thumbnail) }}" width="150px">
+				</a>
+			{%- endfor %}
+		{%- endfor %}
+		{% else %}
+		<p>There's nothing pending approval...</p>
+		{% endif %}
+	</div>
+</div>
+
+{% endblock %}

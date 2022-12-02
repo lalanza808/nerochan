@@ -16,6 +16,33 @@ a, a:visited {
     margin-top: 4em;
 }
 
+.button {
+    color: white;
+    border: 1px solid white;
+    transition: all .3s ease;
+}
+
+.button:hover {
+    color: black;
+    border: 1px solid white;
+    background-color: white;
+    transition: all .3s ease;
+}
+
+.button-secondary {
+    color: black;
+    background-color: white;
+    border: 1px solid white;
+    transition: all .3s ease;
+}
+
+.button-secondary:hover {
+    color: white;
+    border: 1px solid red;
+    background-color: red;
+    transition: all .3s ease;
+}
+
 ul {
     list-style: circle;
 }

@@ -50,6 +50,15 @@
       </h5>
     </div>
   </div>
+  <div class="row">
+    <div class="twelve columns">
+      <h1>{{ hidden_artworks }}</h1>
+      <h5>
+        <a href="{{ url_for('artwork.hidden') }}">
+          hidden<br />artwork{% if hidden_artworks != 1 %}s{% endif %}</h5>
+        </a>
+    </div>
+  </div>
 </div>
 
 {% endblock %}
