@@ -96,7 +96,7 @@ class Artwork(pw.Model):
     
     def generate_thumbnail(self):
         is_gif = self.image.endswith('.gif')
-        _t = f'thumbnail-{self.image}'
+        _t = self.thumbnail
         i = f'{config.DATA_PATH}/uploads/{self.image}'
         t = f'{config.DATA_PATH}/uploads/{_t}'
         try:
@@ -106,22 +106,22 @@ class Artwork(pw.Model):
                 frames = ImageSequence.Iterator(image)
                 def thumbnails(frames):
                     for frame in frames:
-                        thumbnail = frame.copy()
+                        thumbnail = frame.copy().convert('RGBA')
                         thumbnail.thumbnail(size, Image.ANTIALIAS)
                         if self.nsfw:
-                            thumbnail = thumbnail.filter(ImageFilter.GaussianBlur(radius = 4))
+                            thumbnail = thumbnail.filter(ImageFilter.GaussianBlur(radius = 6))
                         yield thumbnail
                 _frames = thumbnails(frames)
                 _image = next(_frames)
                 _image.info = image.info
                 _image.save(t, save_all=True, append_images=list(_frames), disposal=2)
+                _image.close()
             else:
                 image.thumbnail(size, Image.ANTIALIAS)
                 if self.nsfw:
-                    image = image.filter(ImageFilter.GaussianBlur(radius = 4))
+                    image = image.filter(ImageFilter.GaussianBlur(radius = 6))
                 image.save(t, format=image.format)
             image.close()
-            self.thumbnail = _t
             self.save()
             return True
         except Exception as e:
