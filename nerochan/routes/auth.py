@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 from flask import flash, redirect, url_for
-from flask_login import login_user, logout_user, current_user
+from flask_login import logout_user, current_user
 
 from nerochan.forms import UserForm, UserRegistration, UserChallenge
 from nerochan.helpers import make_wallet_rpc
@@ -31,7 +31,7 @@ def register():
             wallet_address=form.wallet_address.data,
         )
         user.save()
-        login_user(user)
+        user.login()
         return redirect(url_for('main.index'))
 
     return render_template("auth/register.html", form=form)
@@ -77,7 +77,7 @@ def challenge(handle):
             res = make_wallet_rpc('verify', data)
             if res['good']:
                 user.regenerate_challenge()
-                login_user(user)
+                user.login()
                 flash('Successful login!')
                 return redirect(url_for('main.index'))
             else:

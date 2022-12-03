@@ -14,7 +14,7 @@
 		{%- for _artwork in artwork | batch(4) %}
 			{%- for art in _artwork %}
 				<a class="artworkLink" href="{{ url_for('artwork.show', id=art.id) }}">
-					<img src="{{ url_for('main.uploaded_file', filename=art.thumbnail) }}" width="150px">
+					<img src="{{ url_for('main.uploaded_file', filename=art.thumbnail) }}" width="150px" style="border: 1px solid white;">
 				</a>
 			{%- endfor %}
 		{%- endfor %}

@@ -2,7 +2,7 @@ from os import path
 from datetime import datetime
 from secrets import token_urlsafe
 
-from flask import url_for
+from flask_login import login_user
 from PIL import Image, ImageSequence, ImageFilter
 from cv2 import VideoCapture
 
@@ -51,6 +51,11 @@ class User(pw.Model):
 
     def regenerate_challenge(self):
         self.challenge = gen_challenge()
+        self.save()
+    
+    def login(self):
+        login_user(self)
+        self.last_login_date = datetime.utcnow()
         self.save()
 
     class Meta:
