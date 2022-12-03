@@ -114,20 +114,18 @@ class Artwork(pw.Model):
                 _frames = thumbnails(frames)
                 _image = next(_frames)
                 _image.info = image.info
-                
-                _image.save(t, format=image.format, save_all=True, append_images=list(_frames), disposal=2)
+                _image.save(t, save_all=True, append_images=list(_frames), disposal=2)
             else:
                 image.thumbnail(size, Image.ANTIALIAS)
                 if self.nsfw:
                     image = image.filter(ImageFilter.GaussianBlur(radius = 4))
                 image.save(t, format=image.format)
-            
-            
             image.close()
             self.thumbnail = _t
             self.save()
             return True
-        except:
+        except Exception as e:
+            print(e)
             return False
 
     class Meta:

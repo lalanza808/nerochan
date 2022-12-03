@@ -11,19 +11,16 @@
 		</h6>
 		<p class="artworkDescription">{{ artwork.description }}</p>
 		<div class="row">
-			{% if not artwork.approved %}
-					{% if artwork.hidden %}
-						<a href="{{ url_for('artwork.manage', id=artwork.id, action='delete') }}"><button class="button-secondary">Delete</button></a>
-					{% else %}
-						<a href="{{ url_for('artwork.manage', id=artwork.id, action='reject') }}"><button class="button">Reject</button></a>
-					{% endif %}
-					<a href="{{ url_for('artwork.manage', id=artwork.id, action='approve') }}"><button class="button-primary">Approve</button></a>
-					
-			{% endif %}
 			{% if current_user.is_authenticated and current_user.is_admin %}
-				<span class="ml-4">
-					<a href="{{ url_for('artwork.manage', id=artwork.id, action='regenerate_thumbnail') }}"><button class="button">Regen Thumbnail</button></a>
-				</span>
+				<a href="{{ url_for('artwork.manage', id=artwork.id, action='regenerate_thumbnail') }}"><button class="button">Regen Thumbnail</button></a>
+			{% endif %}
+			{% if not artwork.approved %}
+				{% if artwork.hidden %}
+					<a href="{{ url_for('artwork.manage', id=artwork.id, action='delete') }}"><button class="button-secondary">Delete</button></a>
+				{% else %}
+					<a href="{{ url_for('artwork.manage', id=artwork.id, action='reject') }}"><button class="button">Reject</button></a>
+				{% endif %}
+				<a href="{{ url_for('artwork.manage', id=artwork.id, action='approve') }}"><button class="button-primary">Approve</button></a>
 			{% endif %}
 		</div>
 	</div>
