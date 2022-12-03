@@ -2,7 +2,9 @@ from os import path
 from datetime import datetime
 from secrets import token_urlsafe
 
+from flask import url_for
 from PIL import Image, ImageSequence, ImageFilter
+from cv2 import VideoCapture
 
 import peewee as pw
 
@@ -92,18 +94,29 @@ class Artwork(pw.Model):
 
     @property
     def thumbnail(self):
-        return f'thumbnail-{self.image}'
+        res = f'thumbnail-{self.image}'
+        if self.is_video:
+            return f'{res[:-3]}.png'
+        else:
+            return res
+    
+    @property
+    def is_video(self):
+        if self.image.endswith('.mp4') or self.image.endswith('.webm'):
+            return True
+        else:
+            return False
     
     def generate_thumbnail(self):
-        is_gif = self.image.endswith('.gif')
         _t = self.thumbnail
         i = f'{config.DATA_PATH}/uploads/{self.image}'
         t = f'{config.DATA_PATH}/uploads/{_t}'
         try:
             size = (150,150)
-            image = Image.open(i)
-            if is_gif:
+            if self.image.endswith('.gif'):
+                image = Image.open(i)
                 frames = ImageSequence.Iterator(image)
+                image.close()
                 def thumbnails(frames):
                     for frame in frames:
                         thumbnail = frame.copy().convert('RGBA')
@@ -116,12 +129,24 @@ class Artwork(pw.Model):
                 _image.info = image.info
                 _image.save(t, save_all=True, append_images=list(_frames), disposal=2)
                 _image.close()
+            elif self.is_video:
+                cap = VideoCapture(i)
+                _, frame = cap.read()
+                image = Image.fromarray(frame)
+                if self.nsfw:
+                    image = image.filter(ImageFilter.GaussianBlur(radius = 6))
+                pb = Image.open('nerochan/static/images/play.png')
+                image.paste(pb, (int(image.width / 2) - int(pb.width / 2), int(image.height / 2) - int(pb.height / 2)))
+                pb.close()
+                image.save(t, format=image.format)
+                image.close()
             else:
+                image = Image.open(i)
                 image.thumbnail(size, Image.ANTIALIAS)
                 if self.nsfw:
                     image = image.filter(ImageFilter.GaussianBlur(radius = 6))
                 image.save(t, format=image.format)
-            image.close()
+                image.close()
             self.save()
             return True
         except Exception as e:

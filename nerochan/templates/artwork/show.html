@@ -6,9 +6,12 @@
 <div class="container">
     <div class="row">
 		<h2 class="no-margin"><strong>{{ artwork.title }}</strong></h2>
-		<h6 class="no-margin">
-			posted by <a href="{{ url_for('user.show', handle=artwork.user.handle) }}">{{ artwork.user.handle }}</a> - {{ artwork.upload_date | humanize }}
-		</h6>
+		<span>
+			<p class="inline nsfw">NSFW</p>
+			<h6 class="no-margin inline">
+				posted by <a href="{{ url_for('user.show', handle=artwork.user.handle) }}">{{ artwork.user.handle }}</a> - {{ artwork.upload_date | humanize }}
+			</h6>
+		</span>
 		<p class="artworkDescription">{{ artwork.description }}</p>
 		<div class="row">
 			{% if current_user.is_authenticated and current_user.is_admin %}
@@ -28,7 +31,13 @@
 	<div class="row">
 		<div class="column one-half">
 			<a href="{{ img }}">
-				<img src="{{ img }}" width="100%" style="padding-bottom: 2em;">
+				{% if artwork.is_video %}
+					<video controls autoplay loop preload disablepictureinpicture muted playsinline width="100%">
+						<source src="{{ img }}" type="video/{{ artwork.image.split('.')[-1]}}">
+					</video>
+				{% else %}
+					<img src="{{ img }}" width="100%">
+				{% endif %}
 			</a>
 		</div>
 		<div class="column one-half">

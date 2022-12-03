@@ -20,6 +20,17 @@ a, a:visited {
     margin-top: 4em;
 }
 
+.inline {
+    display: inline;
+}
+
+.nsfw {
+    color: red;
+    border: 1px solid red;
+    border-radius: 4px;
+    padding: 4px;
+}
+
 .button {
     color: white;
     border: 1px solid white;
