@@ -14,9 +14,9 @@ bp = Blueprint('admin', 'admin', url_prefix='/admin')
 def dashboard():
     artists = User.select().where(User.is_verified == True).count()
     admins = User.select().where(User.is_admin == True).count()
-    active_artworks = Artwork.select().where(Artwork.approved == True).count()
+    active_artworks = Artwork.select().where(Artwork.approved == True, Artwork.hidden == False).count()
     hidden_artworks = Artwork.select().where(Artwork.hidden == True).count()
-    pending_artworks = Artwork.select().where(Artwork.approved == False).count()
+    pending_artworks = Artwork.select().where(Artwork.approved == False, Artwork.hidden == False).count()
     confirmed_tips = Transaction.select().where(Transaction.verified == True).count()
     pending_tips = Transaction.select().where(Transaction.verified == False).count()
     return render_template(

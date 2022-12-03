@@ -1,3 +1,4 @@
+from math import ceil
 from pathlib import Path
 from secrets import token_urlsafe
 
@@ -15,7 +16,25 @@ bp = Blueprint('artwork', 'artwork', url_prefix='/artwork')
 
 @bp.route('')
 def list():
-    return 'show all artwork'
+    ipp = 20
+    page = request.args.get("page", 1)
+    try:
+        page = int(page)
+    except:
+        flash('Invalid page number provided.', 'warning')
+        page = 1
+    artwork = Artwork.select().where(
+        Artwork.approved == True,
+        Artwork.hidden == False
+    ).order_by(Artwork.upload_date.desc())
+    paginated_posts = artwork.paginate(page, ipp)
+    total_pages = ceil(artwork.count() / ipp)
+    return render_template(
+        'artwork/list.html',
+        artwork=paginated_posts,
+        page=page,
+        total_pages=total_pages
+    )
 
 @bp.route('/pending')
 @login_required
@@ -76,6 +95,12 @@ def manage(id, action):
     elif action == 'regenerate_thumbnail':
         artwork.generate_thumbnail()
         flash(f'Generated new thumbnail for artwork {artwork.id}', 'success')
+        return redirect(url_for('artwork.show', id=artwork.id))
+    elif action == 'toggle_nsfw':
+        artwork.nsfw = not artwork.nsfw
+        artwork.save()
+        artwork.generate_thumbnail()
+        flash(f'Toggled NSFW status for artwork {artwork.id} and regenerated thumbnail.', 'success')
         return redirect(url_for('artwork.show', id=artwork.id))
     return redirect(url_for('artwork.pending'))
 

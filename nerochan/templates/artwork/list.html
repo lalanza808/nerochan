@@ -1,0 +1,39 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+		<h1>artworks</h1>
+		{% if artwork %}
+            {%- for _artwork in artwork | batch(4) %}
+                {%- for artwork in _artwork %}
+                    <a class="artworkLink" href="{{ url_for('artwork.show', id=artwork.id) }}">
+                        <img src="{{ url_for('main.uploaded_file', filename=artwork.thumbnail) }}" width="150px">
+                    </a>
+                {%- endfor %}
+            {%- endfor %}
+            
+
+		{% else %}
+		    <p>There's nothing here yet...</p>
+		{% endif %}
+    </div>
+    {% if artwork %}
+        <div class="row mt-4">
+            <span class="inline">
+                {% for i in range(1, total_pages + 1) %}
+                    <h6 class="inline">
+                        {% if i == page %}
+                            {{ page }}
+                        {% else %}
+                            <a href="?page={{ i }}">{{ i }}</a>
+                        {% endif %}
+                    </h6>
+                {% endfor %}
+            </span>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

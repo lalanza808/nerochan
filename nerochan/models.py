@@ -116,7 +116,6 @@ class Artwork(pw.Model):
             if self.image.endswith('.gif'):
                 image = Image.open(i)
                 frames = ImageSequence.Iterator(image)
-                image.close()
                 def thumbnails(frames):
                     for frame in frames:
                         thumbnail = frame.copy().convert('RGBA')
@@ -129,6 +128,7 @@ class Artwork(pw.Model):
                 _image.info = image.info
                 _image.save(t, save_all=True, append_images=list(_frames), disposal=2)
                 _image.close()
+                image.close()
             elif self.is_video:
                 cap = VideoCapture(i)
                 _, frame = cap.read()
