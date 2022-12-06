@@ -3,7 +3,7 @@ from datetime import datetime
 from secrets import token_urlsafe
 
 from flask_login import login_user
-from PIL import Image, ImageSequence, ImageFilter
+from PIL import Image, ImageSequence, ImageFilter, ImageFont
 from cv2 import VideoCapture
 
 import peewee as pw
@@ -122,12 +122,15 @@ class Artwork(pw.Model):
                 image = Image.open(i)
                 frames = ImageSequence.Iterator(image)
                 def thumbnails(frames):
+                    nsfw = Image.open('nerochan/static/images/nsfw.png')
                     for frame in frames:
                         thumbnail = frame.copy().convert('RGBA')
                         thumbnail.thumbnail(size, Image.ANTIALIAS)
                         if self.nsfw:
                             thumbnail = thumbnail.filter(ImageFilter.GaussianBlur(radius = 6))
+                            thumbnail.paste(nsfw, (int(thumbnail.width / 2) - int(nsfw.width / 2), int(thumbnail.height / 2) - int(nsfw.height / 2)), nsfw)
                         yield thumbnail
+                    nsfw.close()
                 _frames = thumbnails(frames)
                 _image = next(_frames)
                 _image.info = image.info
@@ -139,9 +142,12 @@ class Artwork(pw.Model):
                 _, frame = cap.read()
                 image = Image.fromarray(frame)
                 if self.nsfw:
+                    nsfw = Image.open('nerochan/static/images/nsfw.png')
                     image = image.filter(ImageFilter.GaussianBlur(radius = 6))
+                    image.paste(nsfw, (int(image.width / 2) - int(nsfw.width / 2), int(image.height / 2) - int(nsfw.height / 2)), nsfw)
+                    nsfw.close()
                 pb = Image.open('nerochan/static/images/play.png')
-                image.paste(pb, (int(image.width / 2) - int(pb.width / 2), int(image.height / 2) - int(pb.height / 2)))
+                image.paste(pb, (int(image.width / 2) - int(pb.width / 2), int(image.height / 2) - int(pb.height / 2)), pb)
                 pb.close()
                 image.save(t, format=image.format)
                 image.close()
@@ -149,7 +155,10 @@ class Artwork(pw.Model):
                 image = Image.open(i)
                 image.thumbnail(size, Image.ANTIALIAS)
                 if self.nsfw:
+                    nsfw = Image.open('nerochan/static/images/nsfw.png')
                     image = image.filter(ImageFilter.GaussianBlur(radius = 6))
+                    image.paste(nsfw, (int(image.width / 2) - int(nsfw.width / 2), int(image.height / 2) - int(nsfw.height / 2)), nsfw)
+                    nsfw.close()
                 image.save(t, format=image.format)
                 image.close()
             self.save()

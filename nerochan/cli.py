@@ -18,6 +18,12 @@ def cli(app):
         model = peewee.Model.__subclasses__()
         db.create_tables(model)
     
+    @app.cli.command('regenerate_thumbnails')
+    def regenerate_thumbnails():
+        for artwork in Artwork.select():
+            print(f'regenerating thumbnail for artwork {artwork.id}')
+            artwork.generate_thumbnail()
+    
     @click.argument('handle')
     @app.cli.command('add_admin')
     def add_admin(handle):
