@@ -2,6 +2,7 @@
 
 export RPC_CREDS="${2}"
 export DAEMON_ADDRESS="${3}"
+export WALLET_FILE=/data/wallet
 
 # Define the network we plan to operate our wallet in
 if [[ "${1}" == "stagenet" ]]; then
@@ -16,9 +17,9 @@ else
 fi
 
 # Create new wallet if it doesn't exist
-if [[ ! -d /data/wallet ]]; then
+if [[ ! -d ${WALLET_FILE} ]]; then
   monero-wallet-cli ${NETWORK} \
-    --generate-new-wallet /data/wallet \
+    --generate-new-wallet ${WALLET_FILE} \
     --daemon-address ${DAEMON_ADDRESS} \
     --trusted-daemon \
     --use-english-language-names \
@@ -28,11 +29,11 @@ fi
 # Run RPC wallet
 monero-wallet-rpc ${NETWORK} \
   --daemon-address ${DAEMON_ADDRESS} \
-  --wallet-file /data/wallet \
+  --wallet-file ${WALLET_FILE} \
   --password "" \
   --rpc-login ${RPC_CREDS} \
   --rpc-bind-port 8000 \
   --rpc-bind-ip 0.0.0.0 \
   --confirm-external-bind \
-  --log-file /data/wallet-rpc.log \
+  --log-file ${WALLET_FILE}-rpc.log \
   --trusted-daemon

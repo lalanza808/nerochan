@@ -4,9 +4,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-monero
+    restart: always
     ports:
       - 127.0.0.1:${XMR_WALLET_RPC_PORT:-8000}:${XMR_WALLET_RPC_PORT:-8000}
     volumes:
-      - ${DATA_DIR:-./data/wallet}:/data
+      - wallet
     command:
       bash /run_wallet.sh "${XMR_WALLET_NETWORK}" "${XMR_WALLET_RPC_USER}:${XMR_WALLET_RPC_PASS}" "${XMR_DAEMON_URI}"
+volumes:
+  wallet:
