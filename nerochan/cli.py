@@ -57,6 +57,9 @@ def cli(app):
             }
             try:
                 res = make_wallet_rpc('check_tx_key', data)
+                if res['received'] == 0:
+                    click.echo('[!] Key and tx are correct, but the address is not.')
+                    continue
                 if res['in_pool'] is False:
                     txdata = get_daemon().transactions([tx.tx_id])[0]
                     d = txdata.timestamp.astimezone(timezone.utc)
