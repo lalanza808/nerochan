@@ -6,6 +6,8 @@ from datetime import datetime, timedelta, timezone
 from os import path, makedirs
 from urllib.request import urlopen
 
+from monero.exceptions import TransactionNotFound
+
 from nerochan.helpers import make_wallet_rpc, get_daemon
 from nerochan.models import User, Artwork, Transaction
 
@@ -48,7 +50,7 @@ def cli(app):
     
     @app.cli.command('verify_tips')
     def verify_tips():
-        txes = Transaction.select()
+        txes = Transaction.select().where(Transaction.verified == False)
         for tx in txes:
             data = {
                 'txid': tx.tx_id,
@@ -57,6 +59,7 @@ def cli(app):
             }
             try:
                 res = make_wallet_rpc('check_tx_key', data)
+                print(res)
                 if res['received'] == 0:
                     click.echo(f'[tx-{tx.id}] Key and tx are correct, but found XMR amount of 0. User must have selected the wrong post.')
                     continue
@@ -68,10 +71,14 @@ def cli(app):
                     tx.verified = True
                     tx.save()
                     click.echo(f'[+] Found valid tip {tx.tx_id}')
+            except TransactionNotFound as e:
+                print(f'Transaction not found for tx #{tx.id}: {tx.tx_id}')
             except Exception as e:
-                # delete if it fails for over 8 hours
-                if tx.create_date <= datetime.utcnow() - timedelta(hours=8):
-                    pass
+                print(f'Error for tx #{tx.id}: {e}')
+            finally:
+                # just delete it if older than 12 hours
+                if tx.create_date <= datetime.utcnow() - timedelta(hours=12):
+                    tx.delete_instance()
 
     @app.cli.command('generate_data')
     def generate_data():

@@ -165,7 +165,7 @@ class Transaction(pw.Model):
     tx_key = pw.CharField(unique=True)
     atomic_xmr = pw.BigIntegerField(null=True)
     to_address = pw.CharField()
-    artwork = pw.ForeignKeyField(Artwork)
+    artwork = pw.ForeignKeyField(Artwork, backref='tips')
     verified = pw.BooleanField(default=False)
     create_date = pw.DateTimeField(default=datetime.utcnow)
     tx_date = pw.DateTimeField(null=True)
