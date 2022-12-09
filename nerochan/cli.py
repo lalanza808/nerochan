@@ -48,7 +48,7 @@ def cli(app):
     
     @app.cli.command('verify_tips')
     def verify_tips():
-        txes = Transaction.select().where(Transaction.verified == False)
+        txes = Transaction.select()
         for tx in txes:
             data = {
                 'txid': tx.tx_id,
@@ -58,7 +58,7 @@ def cli(app):
             try:
                 res = make_wallet_rpc('check_tx_key', data)
                 if res['received'] == 0:
-                    click.echo('[!] Key and tx are correct, but the address is not.')
+                    click.echo(f'[tx-{tx.id}] Key and tx are correct, but found XMR amount of 0. User must have selected the wrong post.')
                     continue
                 if res['in_pool'] is False:
                     txdata = get_daemon().transactions([tx.tx_id])[0]
