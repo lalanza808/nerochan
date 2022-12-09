@@ -21,7 +21,7 @@ def gen_challenge():
 
 class User(pw.Model):
     """
-    User model is for base user management and reporting.
+    User model is for user management, reporting, and metadata.
     """
     id = pw.AutoField()
     register_date = pw.DateTimeField(default=datetime.utcnow)
@@ -33,6 +33,10 @@ class User(pw.Model):
     is_mod = pw.BooleanField(default=False)
     is_verified = pw.BooleanField(default=False)
     is_banned = pw.BooleanField(default=False)
+    website = pw.CharField(unique=True, default='')
+    twitter_handle = pw.CharField(unique=True, default='')
+    bio = pw.TextField(default='')
+    email = pw.CharField(unique=True, default='')
 
     @property
     def is_authenticated(self):
@@ -57,26 +61,6 @@ class User(pw.Model):
         login_user(self)
         self.last_login_date = datetime.utcnow()
         self.save()
-
-    class Meta:
-        database = db
-
-
-class Profile(pw.Model):
-    """
-    Profile model is for users to provide metadata about
-    themselves; artists for their fans or even just the general public.
-    Links to social media, contact info, portfolio sites, etc
-    should go in here.
-    """
-    id = pw.AutoField()
-    user = pw.ForeignKeyField(User)
-    create_date = pw.DateTimeField(default=datetime.utcnow)
-    website = pw.CharField(unique=True, null=True)
-    twitter_handle = pw.CharField(unique=True, null=True)
-    bio = pw.CharField(null=True)
-    email = pw.CharField(unique=True, null=True)
-    verified = pw.CharField(default=False)
 
     class Meta:
         database = db

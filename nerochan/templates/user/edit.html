@@ -2,7 +2,34 @@
 
 {% block content %}
 
-<h1>{{ current_user.handle }}</h1>
-<p>Edit your profile</p>
+<div class="container">
+    <div class="row">
+        <h1>profile</h1>
+        <p>
+            Update your artist info/socials for your patrons to find you.
+            <a href="{{ url_for('user.show', handle=current_user.handle) }}">View Profile</a>
+        </p>
+        <form method="post" action="" class="">
+            {% for f in form %}
+                {% if f.name == 'csrf_token' %}
+                    {{ f }}
+                {% elif f.name == 'bio' %}
+                    {{ f.label }}
+                    <textarea class="u-full-width" id="bio" name="bio" placeholder="So there I was..." type="text">{{ current_user.bio }}</textarea>
+                {% else %}
+                    {{ f.label }}
+                    {{ f(value=current_user[f.name]) }}
+                {% endif %}
+            {% endfor %}
+            
+            <ul>
+              {%- for field, errors in form.errors.items() %}
+                <li>{{ form[field].label }}: {{ ', '.join(errors) }}</li>
+              {%- endfor %}
+            </ul>
+            <input type="submit" value="Submit" class="button-primary">
+        </form>
+    </div>
+</div>
 
 {% endblock %}

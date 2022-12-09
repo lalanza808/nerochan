@@ -5,6 +5,7 @@
       <li class="navbar-item"><a class="navbar-link" href="{{ url_for('main.about') }}">About</a></li>
       {%- if current_user.is_authenticated %}
         <li class="navbar-item"><a class="navbar-link" href="{{ url_for('artwork.create') }}">Upload</a></li>
+        <li class="navbar-item"><a class="navbar-link" href="{{ url_for('user.edit') }}">Profile</a></li>
         {%- if current_user.is_admin %}
           <li class="navbar-item"><a class="navbar-link" href="{{ url_for('admin.dashboard') }}">Admin</a></li>
         {% endif %}

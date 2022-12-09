@@ -1,5 +1,7 @@
+from urllib.parse import urlparse
+
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField
+from wtforms import StringField, BooleanField, TextAreaField, EmailField
 from wtforms.validators import DataRequired, ValidationError
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from monero.address import address
@@ -25,7 +27,6 @@ def is_valid_user(form, field):
         u = User.select().where(User.handle == field.data).first()
         if not u:
             raise ValidationError('User does not exist')
-        return True
     except ValueError:
         raise ValidationError('Error looking up user')
 
@@ -53,3 +54,26 @@ class CreateArtwork(FlaskForm):
     description = StringField('Description:', validators=[], render_kw={'placeholder': 'Description', 'class': 'u-full-width', 'type': 'text'})
     nsfw = BooleanField('NSFW:')
     content = FileField('Upload:', validators=[FileRequired(), FileAllowed(config.ALLOWED_UPLOADS)])
+
+class EditProfile(UserRegistration):
+    website = StringField('Website URL:', render_kw={'placeholder': 'https:// .....', 'class': 'u-full-width', 'type': 'text'})
+    twitter_handle = StringField('Twitter Handle:', render_kw={'placeholder': '@lza_menace', 'class': 'u-full-width', 'type': 'text'})
+    bio = TextAreaField('Bio:', render_kw={'placeholder': 'So there I was...', 'class': 'u-full-width', 'type': 'text'})
+    email = EmailField('Email:', render_kw={'placeholder': 'foo@bar.com', 'class': 'u-full-width', 'type': 'text', 'style': 'color: black;'})
+
+    def validate_website(form, field):
+        if not field.data:
+            return
+        if len(field.data) > 50:
+            raise ValidationError('URL too long')
+        u = urlparse(field.data)
+        if not u.scheme or not u.scheme.startswith('http'):
+            raise ValidationError('Invalid URL (requires scheme + domain)')
+    
+    def validate_twitter_handle(form, field):
+        if not field.data:
+            return
+        if len(field.data) > 30:
+            raise ValidationError('Twitter handle too long')
+        if field.data.startswith('http'):
+            raise ValidationError('Invalid Twitter handle')

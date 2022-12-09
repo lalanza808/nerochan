@@ -85,7 +85,7 @@ hr {
     margin-top: 0;
 }
 
-input[type="text"] {
+input[type="text"], textarea {
     color: black;
 }
 
