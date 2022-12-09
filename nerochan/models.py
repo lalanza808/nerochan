@@ -33,10 +33,10 @@ class User(pw.Model):
     is_mod = pw.BooleanField(default=False)
     is_verified = pw.BooleanField(default=False)
     is_banned = pw.BooleanField(default=False)
-    website = pw.CharField(unique=True, default='')
-    twitter_handle = pw.CharField(unique=True, default='')
+    website = pw.CharField(unique=True, null=True)
+    twitter_handle = pw.CharField(unique=True, null=True)
     bio = pw.TextField(default='')
-    email = pw.CharField(unique=True, default='')
+    email = pw.CharField(unique=True, null=True)
 
     @property
     def is_authenticated(self):

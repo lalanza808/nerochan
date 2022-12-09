@@ -20,6 +20,14 @@ a, a:visited {
     margin-top: 4em;
 }
 
+.mt-2 {
+    margin-top: 2em;
+}
+
+.mt-1 {
+    margin-top: 1em;
+}
+
 .inline {
     display: inline;
 }

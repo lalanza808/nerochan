@@ -5,21 +5,32 @@
 <div class="container">
   <div class="row">
 		<h2 class="no-margin"><strong>{{ user.handle }}</strong></h2>
-		<span>
-      {% if user.is_admin %}
-        <p class="inline nsfw">ADMIN</p>
-      {% endif %}
-      {% if user.is_verified %}
-        <p class="inline nsfw">VERIFIED</p>
-      {% endif %}
-      <h6 class="no-margin inline">
-				registered {{ user.register_date | humanize }} - last login {{ user.last_login_date | humanize }}
-			</h6>
+		<span class="">
+            {% if user.is_admin %}
+                <p class="inline nsfw">ADMIN</p>
+            {% endif %}
+            {% if user.is_verified %}
+                <p class="inline nsfw">VERIFIED</p>
+            {% endif %}
+            <p class="no-margin inline">
+                registered {{ user.register_date | humanize }}
+            </p>
 		</span>
-    <br />
-    <br />
-		<h6 class="walletAddress mt-2">{{ user.wallet_address }}</h6>
-	</div>
+        <br />
+        {% if user.website %}
+            <p class="inline no-margin"><a href="{{ user.website }}" target="_blank">site</a></p>
+        {% endif %}
+        {% if user.twitter_handle %}
+            <p class="inline no-margin"><a href="https://twitter.com/{{ user.twitter_handle }}" target="_blank">twitter</a></p>
+        {% endif %}
+        {% if user.email %}
+            <p class="inline no-margin"><a href="mailto:{{ user.email }}" target="_blank">email</a></p>
+        {% endif %}
+        {% if user.bio %}
+            <p class="mt-1">{{ user.bio }}</p>
+        {% endif %}
+        <h6 class="walletAddress mt-1">{{ user.wallet_address }}</h6>
+    </div>
 	<hr>
 	<div class="row">
 		<h1>artworks</h1>
