@@ -17,14 +17,15 @@
             </p>
 		</span>
         <br />
+        <br />
         {% if user.website %}
-            <p class="inline no-margin"><a href="{{ user.website }}" target="_blank">site</a></p>
+            <p class="inline no-margin"><a href="{{ user.website }}" target="_blank"><img src="/static/images/website.svg" width=20px></a></p>
         {% endif %}
         {% if user.twitter_handle %}
-            <p class="inline no-margin"><a href="https://twitter.com/{{ user.twitter_handle }}" target="_blank">twitter</a></p>
+            <p class="inline no-margin"><a href="https://twitter.com/{{ user.twitter_handle }}" target="_blank"><img src="/static/images/twitter.svg" width=20px></a></p>
         {% endif %}
         {% if user.email %}
-            <p class="inline no-margin"><a href="mailto:{{ user.email }}" target="_blank">email</a></p>
+            <p class="inline no-margin"><a href="mailto:{{ user.email }}" target="_blank"><img src="/static/images/email.svg" width=20px></a></p>
         {% endif %}
         {% if user.bio %}
             <p class="mt-1">{{ user.bio }}</p>
