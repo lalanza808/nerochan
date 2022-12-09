@@ -40,3 +40,6 @@ varint==1.0.2
 Werkzeug==2.2.2
 WTForms==3.0.1
 zipp==3.11.0
+flake8==6.0.0
+pyflakes==3.0.1
+lorem==0.1.1
