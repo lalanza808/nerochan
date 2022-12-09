@@ -23,8 +23,11 @@ up: ## Start containers
 down: ## Stop containers
 	docker-compose down
 
-dbshell:
-	docker-compose exec db psql -U nerochan
+logs: ## View container logs
+	docker-compose down
+
+dbshell: ## Start interactive database session
+	sqlite3 data/sqlite.db
 
 shell: ## Start Flask CLI shell
 	./manage.sh shell
@@ -34,3 +37,6 @@ init: ## Initialize SQLite DB
 
 dev: ## Start Flask development web server
 	./manage.sh run
+
+prod: ## Start Gunicorn production web server
+	./manage.sh prod
