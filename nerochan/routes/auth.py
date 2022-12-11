@@ -1,5 +1,7 @@
-from flask import Blueprint, render_template
-from flask import flash, redirect, url_for
+from datetime import datetime
+
+from flask import Blueprint, render_template, request
+from flask import flash, redirect, url_for, Response
 from flask_login import logout_user, current_user
 
 from nerochan.forms import UserForm, UserRegistration, UserChallenge
@@ -66,6 +68,14 @@ def challenge(handle):
     if current_user.is_authenticated:
         flash('Already logged in.')
         return redirect(url_for('main.index'))
+
+    if request.args.get('download'):
+        fn = int(datetime.utcnow().timestamp())
+        return Response(
+            user.challenge,
+            mimetype='text/plain',
+            headers={'Content-Disposition': f'attachment;filename=challenge_{fn}.txt'}
+        )
 
     if form.validate_on_submit():
         data = {

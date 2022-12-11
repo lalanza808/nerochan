@@ -6,7 +6,7 @@
     <div class="row">
         <h1>challenge</h1>
         <p>Handle: {{ user.handle }}</p>
-        <p>Challenge: <span class="walletAddress">{{ user.challenge }}</span></p>
+        <p>Challenge: <span class="walletAddress">{{ user.challenge }}</span> (<a href="?download=1" style="text-decoration-style: dashed;">download</a>)</p>
         <p>Wallet Address: <span class="walletAddress">{{ user.wallet_address }}</span></p>
         {% include 'includes/form.html' %}
     </div>
