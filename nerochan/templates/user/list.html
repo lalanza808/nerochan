@@ -1,0 +1,49 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+		<h1>artists</h1>
+		{% if users %}
+            <h6>{{ total_users }} artists in the database.</h6>
+            <table class="u-full-width">
+                <thead>
+                <tr>
+                    <th>Handle</th>
+                    <th>Register Date</th>
+                    <th>Last Login Date</th>
+                    <th>Artworks</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td><a href="{{ url_for('user.show', handle=user.handle) }}">{{ user.handle }}</a></td>
+                            <td>{{ user.register_date | humanize }}</td>
+                            <td>{{ user.last_login_date | humanize }}</td>
+                            <td>{{ user.artworks.count() }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+		{% endif %}
+    </div>
+    {% if users %}
+        <div class="row mt-4">
+            <span class="inline">
+                {% for i in range(1, total_pages + 1) %}
+                    <h6 class="inline">
+                        {% if i == page %}
+                            {{ page }}
+                        {% else %}
+                            <a href="?page={{ i }}">{{ i }}</a>
+                        {% endif %}
+                    </h6>
+                {% endfor %}
+            </span>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

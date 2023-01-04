@@ -71,7 +71,7 @@ class Artwork(pw.Model):
     Artwork model is any uploaded content from a user.
     """
     id = pw.AutoField()
-    user = pw.ForeignKeyField(User)
+    user = pw.ForeignKeyField(User, backref='artworks')
     image = pw.CharField()
     upload_date = pw.DateTimeField(default=datetime.utcnow)
     last_edit_date = pw.DateTimeField(default=datetime.utcnow)

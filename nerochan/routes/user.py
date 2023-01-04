@@ -11,7 +11,25 @@ bp = Blueprint('user', 'user')
 
 @bp.route('/users')
 def list():
-    return 'users list'
+    ipp = 20
+    page = request.args.get("page", 1)
+    try:
+        page = int(page)
+    except:
+        flash('Invalid page number provided.', 'warning')
+        page = 1
+    users = User.select().where(
+        User.is_verified == True
+    ).order_by(User.register_date.desc())
+    paginated_users = users.paginate(page, ipp)
+    total_pages = ceil(users.count() / ipp)
+    return render_template(
+        'user/list.html',
+        users=paginated_users,
+        total_users=users.count(),
+        page=page,
+        total_pages=total_pages
+    )
 
 @bp.route('/user/<handle>')
 def show(handle: str):
