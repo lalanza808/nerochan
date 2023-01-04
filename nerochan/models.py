@@ -3,7 +3,7 @@ from datetime import datetime
 from secrets import token_urlsafe
 
 from flask_login import login_user
-from PIL import Image, ImageSequence, ImageFilter, ImageFont
+from PIL import Image, ImageSequence, ImageFilter
 from cv2 import VideoCapture
 
 import peewee as pw

@@ -5,6 +5,7 @@ from secrets import token_urlsafe
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
+from PIL import Image
 
 from nerochan.forms import ConfirmTip, CreateArtwork
 from nerochan.decorators import admin_required
@@ -156,7 +157,11 @@ def create():
         f = form.content.data
         filename = secure_filename(f'{rand}-{f.filename}')
         try:
-            f.save(Path(config.DATA_PATH, 'uploads', filename))
+            image = Image.open(f)
+            data = image.getdata()
+            image_without_exif = Image.new(image.mode, image.size)
+            image_without_exif.putdata(data)
+            image_without_exif.save(Path(config.DATA_PATH, 'uploads', filename))
         except Exception as e:
             flash(f'There was an issue saving the file: {e}')
             return redirect(request.referrer)
