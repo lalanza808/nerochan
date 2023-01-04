@@ -7,6 +7,7 @@ from os import path, makedirs
 from urllib.request import urlopen
 
 from monero.exceptions import TransactionNotFound
+from monero.numbers import from_atomic
 
 from nerochan.helpers import make_wallet_rpc, get_daemon
 from nerochan.models import User, Artwork, Transaction
@@ -59,7 +60,7 @@ def cli(app):
             }
             try:
                 res = make_wallet_rpc('check_tx_key', data)
-                print(res)
+                print(f'Found tx data from wallet for tx {tx.tx_id}: {res}')
                 if res['received'] == 0:
                     click.echo(f'[tx-{tx.id}] Key and tx are correct, but found XMR amount of 0. User must have selected the wrong post.')
                     continue
@@ -70,7 +71,7 @@ def cli(app):
                     tx.tx_date = d
                     tx.verified = True
                     tx.save()
-                    click.echo(f'[+] Found valid tip {tx.tx_id}')
+                    click.echo(f'[+] Saved valid tip {tx.tx_id} ({from_atomic(tx.atomic_xmr)} XMR)')
             except TransactionNotFound as e:
                 print(f'Transaction not found for tx #{tx.id}: {tx.tx_id}')
             except Exception as e:
