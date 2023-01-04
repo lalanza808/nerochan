@@ -40,3 +40,9 @@ dev: ## Start Flask development web server
 
 prod: ## Start Gunicorn production web server
 	./manage.sh prod
+
+restart: ## Restart everything
+	$(pkill -e -f gunicorn || echo)
+	docker-compose down
+	docker-compose up -d
+	./manage.sh prod
