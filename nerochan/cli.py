@@ -75,10 +75,10 @@ def cli(app):
                 print(f'Transaction not found for tx #{tx.id}: {tx.tx_id}')
             except Exception as e:
                 print(f'Error for tx #{tx.id}: {e}')
-            finally:
-                # just delete it if older than 12 hours
-                if tx.create_date <= datetime.utcnow() - timedelta(hours=12):
-                    tx.delete_instance()
+            # finally:
+            #     # just delete it if older than 96 hours
+            #     if tx.create_date <= datetime.utcnow() - timedelta(hours=96):
+            #         tx.delete_instance()
 
     @app.cli.command('generate_data')
     def generate_data():
